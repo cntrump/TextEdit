@@ -57,7 +57,7 @@
     if ((self = [super initWithFrame:rect])) {
         numPages = 0;
         [self setLineColor:[NSColor lightGrayColor]];
-        [self setMarginColor:[NSColor whiteColor]];
+        [self setMarginColor:[NSColor textBackgroundColor]];
 	/* This will set the frame to be whatever's appropriate... */
         [self setPrintInfo:[NSPrintInfo sharedPrintInfo]];
     }

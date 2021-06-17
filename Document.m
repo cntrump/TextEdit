@@ -106,7 +106,7 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     
 	textStorage = [[NSTextStorage allocWithZone:[self zone]] init];
 	
-	[self setBackgroundColor:[NSColor whiteColor]];
+	[self setBackgroundColor:[NSColor textBackgroundColor]];
 	[self setEncoding:NoStringEncoding];
 	[self setEncodingForSaving:NoStringEncoding];
 	[self setScaleFactor:1.0];
@@ -289,7 +289,7 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     }
     
     [self setHyphenationFactor:(val = [docAttrs objectForKey:NSHyphenationFactorDocumentAttribute]) ? [val floatValue] : 0];
-    [self setBackgroundColor:(val = [docAttrs objectForKey:NSBackgroundColorDocumentAttribute]) ? val : [NSColor whiteColor]];
+    [self setBackgroundColor:(val = [docAttrs objectForKey:NSBackgroundColorDocumentAttribute]) ? val : [NSColor textBackgroundColor]];
     
     // Set the document properties, generically, going through key value coding
     NSDictionary *map = [self documentPropertyToAttributeNameMappings];

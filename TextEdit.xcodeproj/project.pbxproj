@@ -18,7 +18,6 @@
 		412CFBD60B62AC8A00A46D76 /* LinePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 412CFBD40B62AC8A00A46D76 /* LinePanelController.m */; };
 		413912160BD54AB700760A3D /* DocumentPropertiesPanelController.h in Headers */ = {isa = PBXBuildFile; fileRef = 413912140BD54AB700760A3D /* DocumentPropertiesPanelController.h */; };
 		413912170BD54AB800760A3D /* DocumentPropertiesPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 413912150BD54AB700760A3D /* DocumentPropertiesPanelController.m */; };
-		413A189C0B6433EF00B26CF9 /* LinePanel.strings in Resources */ = {isa = PBXBuildFile; fileRef = 413A189A0B6433EF00B26CF9 /* LinePanel.strings */; };
 		415B215C07BC0732009CEA53 /* Document.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FE20903FE93D5F211CA2CEA /* Document.h */; };
 		415B215D07BC0732009CEA53 /* Controller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FE20904FE93D5F211CA2CEA /* Controller.h */; };
 		415B215E07BC0732009CEA53 /* MultiplePageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FE20905FE93D5F211CA2CEA /* MultiplePageView.h */; };
@@ -27,14 +26,10 @@
 		415B216107BC0732009CEA53 /* EncodingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 92A68B0A02972957007F9DE6 /* EncodingManager.h */; };
 		415B216407BC0732009CEA53 /* Preferences.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6FE20910FE93D5F211CA2CEA /* Preferences.nib */; };
 		415B216507BC0732009CEA53 /* Edit.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6FE20912FE93D5F211CA2CEA /* Edit.nib */; };
-		415B216707BC0732009CEA53 /* ZoomValues.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6FE2091DFE93D5F211CA2CEA /* ZoomValues.strings */; };
 		415B216A07BC0732009CEA53 /* TextEdit.scriptTerminology in Resources */ = {isa = PBXBuildFile; fileRef = 6FE20924FE93D5F211CA2CEA /* TextEdit.scriptTerminology */; };
 		415B216C07BC0732009CEA53 /* TextEdit.scriptSuite in Resources */ = {isa = PBXBuildFile; fileRef = 6FE20926FE93D5F211CA2CEA /* TextEdit.scriptSuite */; };
-		415B216E07BC0732009CEA53 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6FE20928FE93D5F211CA2CEA /* Localizable.strings */; };
-		415B217007BC0732009CEA53 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01AA5997FF66FE3311CA0C5D /* InfoPlist.strings */; };
 		415B217207BC0732009CEA53 /* DocumentWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = F549503200E2A3BB01CA0CA4 /* DocumentWindow.nib */; };
 		415B217307BC0732009CEA53 /* SelectEncodingsPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 92A68B1702972AB9007F9DE6 /* SelectEncodingsPanel.nib */; };
-		415B217407BC0732009CEA53 /* ServicesMenu.strings in Resources */ = {isa = PBXBuildFile; fileRef = 41249AD503895A6700F1DAE5 /* ServicesMenu.strings */; };
 		415B217607BC0732009CEA53 /* TextEdit Test Document.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 418B04C8062631D5009F55E2 /* TextEdit Test Document.rtf */; };
 		415B217707BC0732009CEA53 /* DocumentProperties.nib in Resources */ = {isa = PBXBuildFile; fileRef = 41278ABE06AF663000B5D78D /* DocumentProperties.nib */; };
 		415B217907BC0732009CEA53 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE208FBFE93D5F211CA2CEA /* Document.m */; settings = {ATTRIBUTES = (); }; };
@@ -45,7 +40,6 @@
 		415B217F07BC0732009CEA53 /* Edit_main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE2090AFE93D5F211CA2CEA /* Edit_main.m */; settings = {ATTRIBUTES = (); }; };
 		415B218007BC0732009CEA53 /* EncodingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A68B0B02972957007F9DE6 /* EncodingManager.m */; };
 		415B218207BC0732009CEA53 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0230D2BAFF2F83FC11CA0C5D /* Cocoa.framework */; };
-		418A618516DECC0D00D80703 /* PrintAccessory.strings in Resources */ = {isa = PBXBuildFile; fileRef = 418A618316DECC0D00D80703 /* PrintAccessory.strings */; };
 		419167BC0B78226D00B4CA33 /* SelectLinePanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 419167BA0B78226C00B4CA33 /* SelectLinePanel.nib */; };
 		41BFB8E91697ABFB00CD8A52 /* Edit.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 41BFB8E41697ABFB00CD8A52 /* Edit.iconset */; };
 		41BFB8EA1697ABFB00CD8A52 /* html.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 41BFB8E51697ABFB00CD8A52 /* html.iconset */; };
@@ -63,7 +57,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		01AA5998FF66FE3311CA0C5D /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0230D2BAFF2F83FC11CA0C5D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		0230D2BFFF2F85EF11CA0C5D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		0230D2C1FF2F85EF11CA0C5D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -74,15 +67,12 @@
 		411131D90D4FA70D00AF3A0E /* TextEditMisc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextEditMisc.h; sourceTree = "<group>"; };
 		4116BCFC1317428900C7C8C1 /* PrintingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintingTextView.h; sourceTree = "<group>"; };
 		4116BCFD1317428900C7C8C1 /* PrintingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintingTextView.m; sourceTree = "<group>"; };
-		41249AD603895A6700F1DAE5 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/ServicesMenu.strings; sourceTree = "<group>"; };
 		412CFBD30B62AC8A00A46D76 /* LinePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinePanelController.h; sourceTree = "<group>"; };
 		412CFBD40B62AC8A00A46D76 /* LinePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinePanelController.m; sourceTree = "<group>"; };
 		413912140BD54AB700760A3D /* DocumentPropertiesPanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentPropertiesPanelController.h; sourceTree = "<group>"; };
 		413912150BD54AB700760A3D /* DocumentPropertiesPanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentPropertiesPanelController.m; sourceTree = "<group>"; };
-		413A189B0B6433EF00B26CF9 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/LinePanel.strings; sourceTree = "<group>"; };
 		415B218507BC0732009CEA53 /* Info-TextEdit.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-TextEdit.plist"; sourceTree = "<group>"; };
 		415B218607BC0732009CEA53 /* TextEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		418A618416DECC0D00D80703 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/PrintAccessory.strings; sourceTree = "<group>"; };
 		418B04C8062631D5009F55E2 /* TextEdit Test Document.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "TextEdit Test Document.rtf"; sourceTree = "<group>"; };
 		41B87F031639EFE7005437AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Base; path = Base.lproj/Edit.nib; sourceTree = "<group>"; };
 		41B87F041639EFE7005437AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Base; path = Base.lproj/Preferences.nib; sourceTree = "<group>"; };
@@ -109,10 +99,8 @@
 		6FE20907FE93D5F211CA2CEA /* ScalingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScalingScrollView.h; sourceTree = "<group>"; };
 		6FE20908FE93D5F211CA2CEA /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Preferences.h; sourceTree = "<group>"; };
 		6FE2090AFE93D5F211CA2CEA /* Edit_main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Edit_main.m; sourceTree = "<group>"; };
-		6FE2091EFE93D5F211CA2CEA /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/ZoomValues.strings; sourceTree = "<group>"; };
 		6FE20924FE93D5F211CA2CEA /* TextEdit.scriptTerminology */ = {isa = PBXFileReference; lastKnownFileType = text.plist.scriptTerminology; path = TextEdit.scriptTerminology; sourceTree = "<group>"; };
 		6FE20926FE93D5F211CA2CEA /* TextEdit.scriptSuite */ = {isa = PBXFileReference; lastKnownFileType = text.plist.scriptSuite; path = TextEdit.scriptSuite; sourceTree = "<group>"; };
-		6FE20929FE93D5F211CA2CEA /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6FE20936FE93D5F211CA2CEA /* README.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = README.rtf; sourceTree = "<group>"; };
 		6FE20938FE93D5F211CA2CEA /* TextEdit.scatterload */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TextEdit.scatterload; sourceTree = "<group>"; };
 		92A68B0A02972957007F9DE6 /* EncodingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncodingManager.h; sourceTree = "<group>"; };
@@ -229,12 +217,6 @@
 		6FE2091BFE93D5F211CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				6FE20928FE93D5F211CA2CEA /* Localizable.strings */,
-				6FE2091DFE93D5F211CA2CEA /* ZoomValues.strings */,
-				41249AD503895A6700F1DAE5 /* ServicesMenu.strings */,
-				413A189A0B6433EF00B26CF9 /* LinePanel.strings */,
-				01AA5997FF66FE3311CA0C5D /* InfoPlist.strings */,
-				418A618316DECC0D00D80703 /* PrintAccessory.strings */,
 				6FE20926FE93D5F211CA2CEA /* TextEdit.scriptSuite */,
 				6FE20924FE93D5F211CA2CEA /* TextEdit.scriptTerminology */,
 				418B04C8062631D5009F55E2 /* TextEdit Test Document.rtf */,
@@ -345,19 +327,13 @@
 			files = (
 				415B216407BC0732009CEA53 /* Preferences.nib in Resources */,
 				415B216507BC0732009CEA53 /* Edit.nib in Resources */,
-				415B216707BC0732009CEA53 /* ZoomValues.strings in Resources */,
 				415B216A07BC0732009CEA53 /* TextEdit.scriptTerminology in Resources */,
 				415B216C07BC0732009CEA53 /* TextEdit.scriptSuite in Resources */,
-				418A618516DECC0D00D80703 /* PrintAccessory.strings in Resources */,
-				415B216E07BC0732009CEA53 /* Localizable.strings in Resources */,
-				415B217007BC0732009CEA53 /* InfoPlist.strings in Resources */,
 				415B217207BC0732009CEA53 /* DocumentWindow.nib in Resources */,
 				415B217307BC0732009CEA53 /* SelectEncodingsPanel.nib in Resources */,
-				415B217407BC0732009CEA53 /* ServicesMenu.strings in Resources */,
 				41CDED101747190A002F6E28 /* EncodingAccessory.nib in Resources */,
 				415B217607BC0732009CEA53 /* TextEdit Test Document.rtf in Resources */,
 				415B217707BC0732009CEA53 /* DocumentProperties.nib in Resources */,
-				413A189C0B6433EF00B26CF9 /* LinePanel.strings in Resources */,
 				419167BC0B78226D00B4CA33 /* SelectLinePanel.nib in Resources */,
 				41FA79A10B95F0F300FA84AA /* PrintPanelAccessory.nib in Resources */,
 				41BFB8E91697ABFB00CD8A52 /* Edit.iconset in Resources */,
@@ -417,44 +393,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		01AA5997FF66FE3311CA0C5D /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				01AA5998FF66FE3311CA0C5D /* English */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		41249AD503895A6700F1DAE5 /* ServicesMenu.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				41249AD603895A6700F1DAE5 /* English */,
-			);
-			name = ServicesMenu.strings;
-			sourceTree = "<group>";
-		};
 		41278ABE06AF663000B5D78D /* DocumentProperties.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				41B87F081639EFE7005437AB /* Base */,
 			);
 			name = DocumentProperties.nib;
-			sourceTree = "<group>";
-		};
-		413A189A0B6433EF00B26CF9 /* LinePanel.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				413A189B0B6433EF00B26CF9 /* English */,
-			);
-			name = LinePanel.strings;
-			sourceTree = "<group>";
-		};
-		418A618316DECC0D00D80703 /* PrintAccessory.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				418A618416DECC0D00D80703 /* English */,
-			);
-			name = PrintAccessory.strings;
 			sourceTree = "<group>";
 		};
 		419167BA0B78226C00B4CA33 /* SelectLinePanel.nib */ = {
@@ -497,22 +441,6 @@
 			name = Edit.nib;
 			sourceTree = "<group>";
 		};
-		6FE2091DFE93D5F211CA2CEA /* ZoomValues.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6FE2091EFE93D5F211CA2CEA /* English */,
-			);
-			name = ZoomValues.strings;
-			sourceTree = "<group>";
-		};
-		6FE20928FE93D5F211CA2CEA /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6FE20929FE93D5F211CA2CEA /* English */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
 		92A68B1702972AB9007F9DE6 /* SelectEncodingsPanel.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -542,10 +470,10 @@
 				INSTALL_OWNER = root;
 				INSTALL_PATH = "$(SYSTEM_APPS_DIR)";
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CFLAGS = "$(cflags)";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.TextEdit;
 				PRODUCT_NAME = TextEdit;
 				SECTORDER_FLAGS = (
 					"-sectorder",
@@ -581,10 +509,10 @@
 				INSTALL_OWNER = root;
 				INSTALL_PATH = "$(SYSTEM_APPS_DIR)";
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CFLAGS = "$(cflags)";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.apple.TextEdit;
 				PRODUCT_NAME = TextEdit;
 				SECTORDER_FLAGS = (
 					"-sectorder",
@@ -610,8 +538,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EA564B1413C6507000FBCF57 /* Version.xcconfig */;
 			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = "";
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -619,7 +552,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EA564B1413C6507000FBCF57 /* Version.xcconfig */;
 			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = "";
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
