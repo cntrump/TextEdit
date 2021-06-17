@@ -88,14 +88,13 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
         topologicallySortedReadableTypes = [self readableTypes];
         topologicallySortedReadableTypes = [topologicallySortedReadableTypes sortedArrayUsingComparator:^NSComparisonResult(id type1, id type2) {
             if (type1 == type2) return NSOrderedSame;
-            if (UTTypeConformsTo((CFStringRef)type1, (CFStringRef)type2)) return NSOrderedAscending;
-            if (UTTypeConformsTo((CFStringRef)type2, (CFStringRef)type1)) return NSOrderedDescending;
+            if (UTTypeConformsTo((__bridge CFStringRef)type1, (__bridge CFStringRef)type2)) return NSOrderedAscending;
+            if (UTTypeConformsTo((__bridge CFStringRef)type2, (__bridge CFStringRef)type1)) return NSOrderedDescending;
             return (((NSUInteger)type1 < (NSUInteger)type2) ? NSOrderedAscending : NSOrderedDescending);
         }];
-        [topologicallySortedReadableTypes retain];
     });
     for (NSString *readableType in topologicallySortedReadableTypes) {
-        if (UTTypeConformsTo((CFStringRef)type, (CFStringRef)readableType)) return readableType;
+        if (UTTypeConformsTo((__bridge CFStringRef)type, (__bridge CFStringRef)readableType)) return readableType;
     }
     return nil;
 }
@@ -104,7 +103,7 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     if ((self = [super init])) {
         [[self undoManager] disableUndoRegistration];
     
-	textStorage = [[NSTextStorage allocWithZone:[self zone]] init];
+	textStorage = [[NSTextStorage alloc] init];
 	
 	[self setBackgroundColor:[NSColor textBackgroundColor]];
 	[self setEncoding:NoStringEncoding];
@@ -165,8 +164,7 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     
     /* generalize the passed-in type to a type we support.  for instance, generalize "public.xml" to "public.txt" */
     typeName = [[self class] readableTypeForType:typeName];
-    
-    [fileTypeToSet release];
+
     fileTypeToSet = nil;
     
     [[self undoManager] disableUndoRegistration];
@@ -207,7 +205,7 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
 	    [text endEditing];
 	    layoutMgrEnum = [layoutMgrs objectEnumerator]; // rewind
 	    while ((layoutMgr = [layoutMgrEnum nextObject])) [text addLayoutManager:layoutMgr];   // Add the layout managers back
-	    [layoutMgrs release];
+
 	    return NO;	// return NO on error; outError has already been set
 	}
 	
@@ -239,7 +237,6 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     
     layoutMgrEnum = [layoutMgrs objectEnumerator]; // rewind
     while ((layoutMgr = [layoutMgrEnum nextObject])) [text addLayoutManager:layoutMgr];   // Add the layout managers back
-    [layoutMgrs release];
     
     val = [docAttrs objectForKey:NSCharacterEncodingDocumentAttribute];
     [self setEncoding:(val ? [val unsignedIntegerValue] : NoStringEncoding)];
@@ -308,20 +305,19 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
 
 - (NSDictionary *)defaultTextAttributes:(BOOL)forRichText {
     static NSParagraphStyle *defaultRichParaStyle = nil;
-    NSMutableDictionary *textAttributes = [[[NSMutableDictionary alloc] initWithCapacity:2] autorelease];
+    NSMutableDictionary *textAttributes = [[NSMutableDictionary alloc] initWithCapacity:2];
     if (forRichText) {
 	[textAttributes setObject:[NSFont userFontOfSize:0.0] forKey:NSFontAttributeName];
 	if (defaultRichParaStyle == nil) {	// We do this once...
 	    NSInteger cnt;
             NSString *measurementUnits = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleMeasurementUnits"];
             CGFloat tabInterval = ([@"Centimeters" isEqual:measurementUnits]) ? (72.0 / 2.54) : (72.0 / 2.0);  // Every cm or half inch
-	    NSMutableParagraphStyle *paraStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+	    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
             NSTextTabType type = ((NSWritingDirectionRightToLeft == [NSParagraphStyle defaultWritingDirectionForLanguage:nil]) ? NSRightTabStopType : NSLeftTabStopType);
 	    [paraStyle setTabStops:[NSArray array]];	// This first clears all tab stops
 	    for (cnt = 0; cnt < 12; cnt++) {	// Add 12 tab stops, at desired intervals...
                 NSTextTab *tabStop = [[NSTextTab alloc] initWithType:type location:tabInterval * (cnt + 1)];
 		[paraStyle addTabStop:tabStop];
-	 	[tabStop release];
 	    }
 	    defaultRichParaStyle = [paraStyle copy];
 	}
@@ -334,10 +330,10 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
         if (charWidth == 0) charWidth = [charWidthFont maximumAdvancement].width;
 	
 	// Now use a default paragraph style, but with the tab width adjusted
-	NSMutableParagraphStyle *mStyle = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+	NSMutableParagraphStyle *mStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
 	[mStyle setTabStops:[NSArray array]];
 	[mStyle setDefaultTabInterval:(charWidth * tabWidth)];
-        [textAttributes setObject:[[mStyle copy] autorelease] forKey:NSParagraphStyleAttributeName];
+        [textAttributes setObject:[mStyle copy] forKey:NSParagraphStyleAttributeName];
 	
 	// Also set the font
 	[textAttributes setObject:plainFont forKey:NSFontAttributeName];
@@ -353,10 +349,8 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
         NSWritingDirection writingDirection = paragraphStyle ? [(NSParagraphStyle *)paragraphStyle baseWritingDirection] : NSWritingDirectionNatural;
         // We also preserve NSWritingDirectionAttributeName (new in 10.6)
         [text enumerateAttribute:NSWritingDirectionAttributeName inRange:paragraphStyleRange options:0 usingBlock:^(id value, NSRange attributeRange, BOOL *stop){
-            [value retain];
             [text setAttributes:textAttributes range:attributeRange];
             if (value) [text addAttribute:NSWritingDirectionAttributeName value:value range:attributeRange];
-            [value release];
         }];
         if (writingDirection != NSWritingDirectionNatural) [text setBaseWritingDirection:writingDirection range:paragraphStyleRange];
     }];
@@ -376,26 +370,6 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     }
     if (enc == NoStringEncoding) enc = NSUTF8StringEncoding;	// Default to UTF-8
     return enc;
-}
-
-/* Clear the delegates of the text views and window, then release all resources and go away...
-*/
-- (void)dealloc {
-    [textStorage release];
-    [backgroundColor release];
-    
-    [author release];
-    [comment release];
-    [subject release];
-    [title release];
-    [keywords release];
-    [copyright release];
-    [company release];
-    
-    [fileTypeToSet release];
-
-    [originalOrientationSections release];
-    [super dealloc];
 }
 
 - (CGFloat)scaleFactor {
@@ -423,9 +397,7 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
 }
 
 - (void)setBackgroundColor:(NSColor *)color {
-    id oldCol = backgroundColor;
     backgroundColor = [color copy];
-    [oldCol release];
 }
 
 - (NSColor *)backgroundColor {
@@ -446,13 +418,11 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
 	NSPrintInfo *newPrintInfo = [oldPrintInfo copy];
 	[newPrintInfo setPaperSize:size];
 	[self setPrintInfo:newPrintInfo];
-	[newPrintInfo release];
     }
 }
 
 /* Layout orientation sections */
 - (void)setOriginalOrientationSections:(NSArray *)array {
-    [originalOrientationSections release];
     originalOrientationSections = [array copy];
 }
 
@@ -631,7 +601,7 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
 
 
 - (NSPrintOperation *)printOperationWithSettings:(NSDictionary *)printSettings error:(NSError **)outError {
-    NSPrintInfo *tempPrintInfo = [[[self printInfo] copy] autorelease];
+    NSPrintInfo *tempPrintInfo = [[self printInfo] copy];
     [[tempPrintInfo dictionary] addEntriesFromDictionary:printSettings];
     
     BOOL multiPage = [self hasMultiplePages];
@@ -642,19 +612,17 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     id printingView;
     if (multiPage) {    // If already in multiple-page ("wrap-to-page") mode, we simply use the display view for printing
         printingView = documentView;
-        [[[[self windowControllers] objectAtIndex:0] firstTextView] textEditDoForegroundLayoutToCharacterIndex:NSIntegerMax];		// Make sure the whole document is laid out before printing
+        [[self firstTextView] textEditDoForegroundLayoutToCharacterIndex:NSIntegerMax];		// Make sure the whole document is laid out before printing
     } else {            // Otherwise we create a new text view (along with a text container and layout manager)
-        printingView = [[[PrintingTextView alloc] init] autorelease];   // PrintingTextView is a simple subclass of NSTextView. Creating the view this way creates rest of the text system, which it will release when dealloc'ed (since the print panel will be releasing this, we want to hand off the responsibility of release everything)
-        NSLayoutManager *layoutManager = [[[[printingView textContainer] layoutManager] retain] autorelease];
+        printingView = [[PrintingTextView alloc] init];   // PrintingTextView is a simple subclass of NSTextView. Creating the view this way creates rest of the text system, which it will release when dealloc'ed (since the print panel will be releasing this, we want to hand off the responsibility of release everything)
+        NSLayoutManager *layoutManager = [[printingView textContainer] layoutManager];
         NSTextStorage *unnecessaryTextStorage = [layoutManager textStorage];  // We don't want the text storage, since we will use the one we have
         [unnecessaryTextStorage removeLayoutManager:layoutManager];
-        [unnecessaryTextStorage release];
         [textStorage addLayoutManager:layoutManager];
-        [textStorage retain];   // Since later release of the printingView will release the textStorage as well
-        [printingView setLayoutOrientation:[[[[self windowControllers] objectAtIndex:0] firstTextView] layoutOrientation]];
+        [printingView setLayoutOrientation:[[self firstTextView] layoutOrientation]];
     }
     
-    PrintPanelAccessoryController *accessoryController = [[[PrintPanelAccessoryController alloc] init] autorelease];
+    PrintPanelAccessoryController *accessoryController = [[PrintPanelAccessoryController alloc] init];
     NSPrintOperation *op = [NSPrintOperation printOperationWithView:printingView printInfo:tempPrintInfo];
     [op setShowsPrintPanel:YES];
     [op setShowsProgressPanel:YES];
@@ -666,7 +634,7 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
 
     NSPrintPanel *printPanel = [op printPanel];
     if (!multiPage) {
-        [printingView setOriginalSize:[[[[self windowControllers] objectAtIndex:0] firstTextView] frame].size];
+        [printingView setOriginalSize:[[self firstTextView] frame].size];
         [printingView setPrintPanelAccessoryController:accessoryController];
         // We allow changing print parameters if not in "Wrap to Page" mode, where the page setup settings are used
         [printPanel setOptions:[printPanel options] | NSPrintPanelShowsPaperSize | NSPrintPanelShowsOrientation];
@@ -674,6 +642,10 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     [printPanel addAccessoryController:accessoryController];
     
     return op;
+}
+
+- (NSTextView *)firstTextView {
+    return [(id)[[self windowControllers] objectAtIndex:0] firstTextView];
 }
 
 - (NSPrintInfo *)printInfo {
@@ -787,7 +759,6 @@ void validateToggleItem(NSMenuItem *aCell, BOOL useFirst, NSString *first, NSStr
     // Warning, undo support can eat a lot of memory if a long text is changed frequently
     NSAttributedString *textStorageCopy = [[self textStorage] copy];
     [[self undoManager] registerUndoWithTarget:self selector:@selector(setTextStorage:) object:textStorageCopy];
-    [textStorageCopy release];
 
     // ts can actually be a string or an attributed string.
     if ([ts isKindOfClass:[NSAttributedString class]]) {
@@ -802,7 +773,6 @@ void validateToggleItem(NSMenuItem *aCell, BOOL useFirst, NSString *first, NSStr
     if (success) {
         if (fileTypeToSet) {	// If we're reverting, NSDocument will set the file type behind out backs. This enables restoring that type.
             [self setFileType:fileTypeToSet];
-            [fileTypeToSet release];
             fileTypeToSet = nil;
         }
         [self setHasMultiplePages:hasMultiplePages];
@@ -821,7 +791,6 @@ CGFloat defaultTextPadding(void) {
     if (padding < 0.0) {
         NSTextContainer *container = [[NSTextContainer alloc] init];
         padding = [container lineFragmentPadding];
-        [container release];
     }
     return padding;
 }
@@ -842,14 +811,14 @@ CGFloat defaultTextPadding(void) {
     
     // If this document displaced a transient document, it will already have been assigned a window controller. If that is not the case, create one.
     if ([myControllers count] == 0) {
-        [self addWindowController:[[[DocumentWindowController allocWithZone:[self zone]] init] autorelease]];
+        [self addWindowController:[[DocumentWindowController alloc] init]];
     }
 }
 
 /* One of the determinants of whether a file is locked is whether its type is one of our writable types. However, the writable types are a function of whether the document contains attachments. But whether we are locked cannot be a function of whether the document contains attachments, because we won't be asked to redetermine autosaving safety after an undo operation resulting from a cancel, so the document would continue to appear locked if an image were dragged in and then cancel was pressed.  Therefore, we must use an "ignoreTemporary" boolean to treat RTF as temporarily writable despite the attachments.  That's fine since -checkAutosavingSafetyAfterChangeAndReturnError: will perform this check again with ignoreTemporary set to NO, and that method will be called when the operation is done and undone, so no inconsistency results. 
 */
 - (NSArray *)writableTypesForSaveOperation:(NSSaveOperationType)saveOperation ignoreTemporaryState:(BOOL)ignoreTemporary {
-    NSMutableArray *outArray = [[[[self class] writableTypes] mutableCopy] autorelease];
+    NSMutableArray *outArray = [[[self class] writableTypes] mutableCopy];
     if (saveOperation == NSSaveAsOperation) {
 	// Rich-text documents cannot be saved as plain text.
 	if ([self isRichText]) {
@@ -1028,7 +997,7 @@ In addition we overwrite this method as a way to tell that the document has been
                         modalForWindow:sheetWindow
                         delegate:self
                         didPresentSelector:@selector(didPresentErrorWithRecovery:block:)
-                           contextInfo:Block_copy(^(BOOL didRecover) {
+                           contextInfo:CFBridgingRetain(^(BOOL didRecover) {
                                if (!didRecover) {
                                    if (change == NSChangeDone || change == NSChangeRedone) {
                                        [[self undoManager] undo];
@@ -1068,12 +1037,10 @@ In addition we overwrite this method as a way to tell that the document has been
 
 - (void)document:(NSDocument *)ignored didSave:(BOOL)didSave block:(void (^)(BOOL))block {
     block(didSave);
-    Block_release(block);
 }
 
 - (void)didPresentErrorWithRecovery:(BOOL)didRecover block:(void (^)(BOOL))block {
     block(didRecover);
-    Block_release(block);
 }
 
 - (void)attemptRecoveryFromError:(NSError *)error optionIndex:(NSUInteger)recoveryOptionIndex delegate:(id)delegate didRecoverSelector:(SEL)didRecoverSelector contextInfo:(void *)contextInfo {
@@ -1093,13 +1060,11 @@ In addition we overwrite this method as a way to tell that the document has been
                     if (!duplicateDocument) {
                         NSWindow *sheetWindow = [self windowForSheet];
                         if (sheetWindow) {
-                            [delegate retain];
                             [self presentError:duplicateError
                                     modalForWindow:sheetWindow
                                     delegate:self
                                     didPresentSelector:@selector(didPresentErrorWithRecovery:block:)
-                                    contextInfo:Block_copy(^(BOOL didRecover) {
-                                        [delegate release];
+                                    contextInfo:CFBridgingRetain(^(BOOL didRecover) {
                                         ((void (*)(id, SEL, BOOL, void *))objc_msgSend)(delegate, didRecoverSelector, NO, contextInfo);
                                     })];
                             return;
@@ -1119,13 +1084,11 @@ In addition we overwrite this method as a way to tell that the document has been
                 break;
             case TextEditSaveErrorEncodingInapplicable:
                 if (recoveryOptionIndex == 0) { // OK button
-                    [delegate retain];
                     [self continueActivityUsingBlock:^(void) {
                     [self runModalSavePanelForSaveOperation:NSSaveOperation
                         delegate:self
                         didSaveSelector:@selector(document:didSave:block:)
-                        contextInfo:Block_copy(^(BOOL didSave) {
-                            [delegate release];
+                        contextInfo:CFBridgingRetain(^(BOOL didSave) {
                             ((void (*)(id, SEL, BOOL, void *))objc_msgSend)(delegate, didRecoverSelector, didSave, contextInfo);
                         })];
                     }];
@@ -1225,7 +1188,7 @@ In addition we overwrite this method as a way to tell that the document has been
     } else {
     	NSData *data = [text dataFromRange:range documentAttributes:dict error:outError]; // returns NSData
 	if (data) {
-	    result = [[[NSFileWrapper alloc] initRegularFileWithContents:data] autorelease];
+	    result = [[NSFileWrapper alloc] initRegularFileWithContents:data];
 	    if (!result && outError) *outError = [NSError errorWithDomain:NSCocoaErrorDomain code:NSFileWriteUnknownError userInfo:nil];    // Unlikely, but just in case we should generate an NSError
         }
     }

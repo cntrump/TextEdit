@@ -67,7 +67,6 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [NSApp removeObserver:self forKeyPath:@"mainWindow.windowController.document"];
-    [super dealloc];
 }
 
 /* inspectedDocument is a KVO-compliant property, which this method manages. Anytime we hear about the mainWindow, or the mainWindow's document change, we check to see what changed.  Note that activeDocumentChanged doesn't mean document contents changed, but rather we have a new active document.
@@ -81,7 +80,7 @@
 }
     
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (context == [DocumentPropertiesPanelController class]) {
+    if (context == (__bridge void * _Nullable)([DocumentPropertiesPanelController class])) {
 	[self activeDocumentChanged];
     } else {
 	[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -106,7 +105,7 @@
 
     // Make sure we start inspecting the document that is currently active, and start observing changes
     [self activeDocumentChanged];
-    [NSApp addObserver:self forKeyPath:@"mainWindow.windowController.document" options:0 context:[DocumentPropertiesPanelController class]];
+    [NSApp addObserver:self forKeyPath:@"mainWindow.windowController.document" options:0 context:(__bridge void * _Nullable)([DocumentPropertiesPanelController class])];
 
     NSWindow *window = [self window];
     [window setIdentifier:@"DocumentProperties"];

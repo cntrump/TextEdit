@@ -77,7 +77,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [super dealloc];
 }
 
 /* Do not allow selecting the "Customize" item and the separator before it. (Note that the customize item can be chosen and an action will be sent, but the selection doesn't change to it.)
@@ -106,19 +105,11 @@ static EncodingManager *sharedInstance = nil;
 }
 
 - (id)init {
-    if (sharedInstance) {		// We just have one instance of the EncodingManager class, return that one instead
-        [self release];
-    } else if (self = [super init]) {
+    if (self = [super init]) {
         sharedInstance = self;
     }
     return sharedInstance;
 }
-
-- (void)dealloc {
-    if (self != sharedInstance) [super dealloc];	// Don't free the shared instance
-}
-
-
 
 /* Sort using the equivalent Mac encoding as the major key. Secondary key is the actual encoding value, which works well enough. We treat Unicode encodings as special case, putting them at top of the list.
 */
@@ -281,7 +272,7 @@ static int encodingCompare(const void *firstPtr, const void *secondPtr) {
             NSLog(@"Failed to load SelectEncodingsPanel.nib");
             return;
         }
-        [[encodingMatrix window] retain];                               // loadNibNamed:owner:topLevelObjects: does not retain top level objects
+        [encodingMatrix window];                               // loadNibNamed:owner:topLevelObjects: does not retain top level objects
         [(NSPanel *)[encodingMatrix window] setWorksWhenModal:YES];	// This should work when open panel is up
         [[encodingMatrix window] setLevel:NSModalPanelWindowLevel];	// Again, for the same reason
         [self setupEncodingsList];					// Initialize the list (only need to do this once)
@@ -299,26 +290,22 @@ static int encodingCompare(const void *firstPtr, const void *secondPtr) {
         if (([encodingNumber unsignedIntegerValue] != NoStringEncoding) && ([cell state] == NSOnState)) [encs addObject:encodingNumber];
     }
 
-    [encodings autorelease];
     encodings = encs;
 
     [self noteEncodingListChange:YES updateList:NO postNotification:YES];
 }
 
 - (IBAction)clearAll:(id)sender {
-    [encodings autorelease];
-    encodings = [[NSArray array] retain];				// Empty encodings list
+    encodings = [NSArray array];				// Empty encodings list
     [self noteEncodingListChange:YES updateList:YES postNotification:YES];
 }
 
 - (IBAction)selectAll:(id)sender {
-    [encodings autorelease];
-    encodings = [[[self class] allAvailableStringEncodings] retain];	// All encodings
+    encodings = [[self class] allAvailableStringEncodings];	// All encodings
     [self noteEncodingListChange:YES updateList:YES postNotification:YES];
 }
 
 - (IBAction)revertToDefault:(id)sender {
-    [encodings autorelease];
     encodings = nil;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"Encodings"];
     (void)[self enabledEncodings];					// Regenerate default list

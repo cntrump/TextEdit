@@ -53,13 +53,13 @@
 @class Preferences, DocumentPropertiesPanelController, LinePanelController;
 
 @interface Controller : NSObject {
-    IBOutlet Preferences *preferencesController;
-    IBOutlet DocumentPropertiesPanelController *propertiesController;
-    IBOutlet LinePanelController *lineController;
+    __weak IBOutlet Preferences *preferencesController;
+    __weak IBOutlet DocumentPropertiesPanelController *propertiesController;
+    __weak IBOutlet LinePanelController *lineController;
 }
 
-@property (assign) Preferences *preferencesController;
-@property (assign) DocumentPropertiesPanelController *propertiesController;
-@property (assign) LinePanelController *lineController;
+@property (nonatomic, weak) Preferences *preferencesController;
+@property (nonatomic, weak) DocumentPropertiesPanelController *propertiesController;
+@property (nonatomic, weak) LinePanelController *lineController;
 
 @end

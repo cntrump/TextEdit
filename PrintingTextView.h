@@ -57,6 +57,6 @@
     NSSize previousValueOfDocumentSizeInPage;	// As user fiddles with the print panel settings, stores the last document size for which the text was relaid out
     BOOL previousValueOfWrappingToFit;		// Stores the last setting of whether to rewrap to fit page or not
 }
-@property (assign) PrintPanelAccessoryController *printPanelAccessoryController;
-@property (assign) NSSize originalSize;
+@property (nonatomic) PrintPanelAccessoryController *printPanelAccessoryController;
+@property (nonatomic) NSSize originalSize;
 @end
