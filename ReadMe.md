@@ -1,10 +1,10 @@
-TextEdit
+# TextEdit
 
 This directory contains the source code for the TextEdit application. TextEdit is a simple text editor based on the NSText and NSDocument subsystems of Cocoa.
 
 Major source files and what's interesting about them:
 
-Document.m
+## Document.m
 
 Subclass of NSDocument.  One instance of this is created for every document (new or saved) in TextEdit.  
 
@@ -32,7 +32,7 @@ In the printInfo for the document, TextEdit sets horizontal pagination to NSFitP
 As you will note, there is a good deal of code to deal with encoding of the characters in the document when the document contains plain text. The instance variable documentEncoding stores the encoding of the document; this is either deduced from the file or specified by the user when the document is opened. Keeping this encoding around allows the document to be saved with the same encoding as it was read. (When in memory the character encoding of the document is somewhat meaningless, because the characters in the document are stored in an NSString, whose backing stores are always expressed in terms of Unicode characters. The encoding determines how to save the document when saved as plain text.)
 
 
-DocumentWindowController.m
+## DocumentWindowController.m
 
 Subclass of NSWindowController for managing the Document class's interaction with its document window and views.
 
@@ -61,7 +61,7 @@ windowWillUseStandardFrame:defaultFrame: method provides "standard" and "user" s
 This class takes care of setting the document as non-transient after moving or resizing the window.
 
 
-DocumentController.m
+## DocumentController.m
 
 Subclass of NSDocumentController. Most NSDocument-based applications don't need to subclass NSDocumentController. TextEdit does this to provide "transient document" behavior, as well as customizing the open panel.
 
@@ -72,28 +72,28 @@ Transient document is the untitled document put up when TextEdit is first launch
 The open panel customizations include an accessory view which lets the user choose whether to load rich text documents as plain, and the text encoding to be used for plain documents.  These settings are then made available (in the context of the open operation) to the Document class via the methods lastSelectedEncoding, lastSelectedIgnoreHTML, and lastSelectedIgnoreRich.
 
 
-MultiplePageView.m
+## MultiplePageView.m
 
 In wrap-to-page mode there is one NSTextView per page. MultiplePageView is the top level view which groups all of these views.  It is inserted as the document view of the scroll view in the document window. MultiplePageView is fairly simple, providing support for conversions between page numbers and rects, and drawing the background for the pages.
 
 A possible enhancement to this class would be to have it allow the user to manipulate the page margins by dragging guides around. An advanced exercise would be to add custom markers to the ruler to allow changing the page margins via the ruler as well.
 
 
-ScalingScrollView.m
+## ScalingScrollView.m
 
 Contains ScalingScrollView, a subclass of NSView to implement a scroll view with a popup to allow setting the zoom factor. This class is fairly generic and can easily be used in a variety of cases.  The scaleFactor property can be observed.
 
 In TextEdit, this class is always in use in every document window. However, in wrap-to-window mode, the horizontal scroller and the scale popup are disabled, and the scale is set to 100%.
 
 
-Preferences.m
+## Preferences.m
 
 An NSWindowController subclass that controls the preferences window. Since the switch to a bindings-based preferences window, this class has become greatly simplified. However, some preferences, such as HTML saving options and font settings, require special action and are still handled here.
 
 The preferences controller also makes sure that the window size settings are valid; if the user enters an invalid dimension, the field is reset to its previous value.
 
 
-Controller.m
+## Controller.m
 
 This file contains the central controller object for TextEdit.  With TextEdit's move to NSDocument, and creation of several other controllers, this class has shed some weight in Leopard and has fewer responsibilities.
 
@@ -104,7 +104,7 @@ Controller object also provides the little support necessary for allowing TextEd
 Since openFile:userData:error: may be given arbitrary text as file names, it does some clean-up and extra checks. For instance, it trims whitespace and does "~" expansion (where "~" is used as a shortcut to mean "home folder"). 
 
 
-EncodingManager.m
+## EncodingManager.m
 
 This file provides the class EncodingManager, which does most of the sophisticed text encoding related stuff.  This class also manages a panel which lets the user customize the list of encodings available in the application.
 
@@ -113,14 +113,14 @@ In addition, EncodingManager provides the ability to load the accessory view use
 The EncodingPopUpButtonCell class implements a popup which lets the user choose from a list of encodings. The list can be customized via an entry in the popup which brings up a customization panel.  The class's instances assure that they are updated (via notifications) after any change in the customization panel.
 
 
-LinePanelController.m
+## LinePanelController.m
 
 Manages the "Select Line" panel. Subclass of NSWindowController. Uses NSScanner to parse user input.  
 
 The beefiest code in this class is getRange:inTextView:fromLineSpec:toLineSpec:relative:, which figures out the range of characters to be selected based on user's input. Note that this input can be an absolute line (1..number of lines), an absolute range (two line numbers separated by a dash), or a relative line or range (number prefixed by plus or minus).
 
 
-DocumentPropertiesPanelController.m
+## DocumentPropertiesPanelController.m
 
 Manages the “Document Properties” panel. Yet another subclass of NSWindowController.
 
@@ -141,7 +141,7 @@ Finally, this class implements a method to toggle the panel (if active, order it
 This class is mostly reusable; just the name of the class, the nib, validateMenuItem:, and reference to [Document class] need changing. It can be made into an semi-abstract NSWindowController for inspectors by removing these pieces into a subclass.
 
 
-PrintPanelAccessoryController.m
+## PrintPanelAccessoryController.m
 
 A subclass of  the new NSViewController class. Used for adding an accessory view to the print panel. In the case of TextEdit, the accessory view contains just a checkbox, controlling whether or not to include headers and footers on printouts.
 
