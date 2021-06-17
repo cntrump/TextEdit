@@ -94,86 +94,71 @@
 - (BOOL)readFromURL:(NSURL *)absoluteURL ofType:(NSString *)typeName encoding:(NSStringEncoding)encoding ignoreRTF:(BOOL)ignoreRTF ignoreHTML:(BOOL)ignoreHTML error:(NSError **)outError;
 
 /* Is the document rich? */
-- (BOOL)isRichText;
+@property (nonatomic, getter=isRichText, readonly) BOOL richText;
 
 /* Is the document read-only? */
-- (BOOL)isReadOnly;
-- (void)setReadOnly:(BOOL)flag;
+@property (nonatomic, getter=isReadOnly) BOOL readOnly;
 
 /* Document background color */
-- (NSColor *)backgroundColor;
-- (void)setBackgroundColor:(NSColor *)color;
+@property (nonatomic, copy) NSColor *backgroundColor;
 
 /* The encoding of the document... */
-- (NSUInteger)encoding;
-- (void)setEncoding:(NSUInteger)encoding;
+@property (nonatomic) NSUInteger encoding;
 
 /* Encoding of the document chosen when saving */
-- (NSUInteger)encodingForSaving;
-- (void)setEncodingForSaving:(NSUInteger)encoding;
+@property (nonatomic) NSUInteger encodingForSaving;
 
 /* Whether document was converted from some other format (filter services) */
-- (BOOL)isConverted;
-- (void)setConverted:(BOOL)flag;
+@property (nonatomic, getter=isConverted) BOOL converted;
 
 /* Whether document was opened ignoring rich text */
-- (BOOL)isOpenedIgnoringRichText;
-- (void)setOpenedIgnoringRichText:(BOOL)flag;
+@property (nonatomic, getter=isOpenedIgnoringRichText) BOOL openedIgnoringRichText;
 
 /* Whether document was loaded lossily */
-- (BOOL)isLossy;
-- (void)setLossy:(BOOL)flag;
+@property (nonatomic, getter=isLossy) BOOL lossy;
 
 /* Hyphenation factor (0.0-1.0, 0.0 == disabled) */
-- (float)hyphenationFactor;
-- (void)setHyphenationFactor:(float)factor;
+@property (nonatomic) float hyphenationFactor;
 
 /* View size (as it should be saved in a RTF file) */
-- (NSSize)viewSize;
-- (void)setViewSize:(NSSize)newSize;
+@property (nonatomic) NSSize viewSize;
 
 /* Scale factor; 1.0 is 100% */
-- (CGFloat)scaleFactor;
-- (void)setScaleFactor:(CGFloat)scaleFactor;
+@property (nonatomic) CGFloat scaleFactor;
 
 /* Attributes */
 - (NSTextStorage *)textStorage;
 - (void)setTextStorage:(id)ts; // This will _copy_ the contents of the NS[Attributed]String ts into the document's textStorage.
 
 /* Page-oriented methods */
-- (void)setHasMultiplePages:(BOOL)flag;
-- (BOOL)hasMultiplePages;
-- (NSSize)paperSize;
-- (void)setPaperSize:(NSSize)size;
+@property (nonatomic) BOOL hasMultiplePages;
+@property (nonatomic) NSSize paperSize;
 
 /* Action methods */
 - (IBAction)toggleReadOnly:(id)sender;
 - (IBAction)togglePageBreaks:(id)sender;
 
 /* Whether conversion to rich/plain be done without loss of information */
-- (BOOL)toggleRichWillLoseInformation;
+@property (nonatomic, readonly) BOOL toggleRichWillLoseInformation;
 
 /* Default text attributes for plain or rich text formats */
 - (NSDictionary *)defaultTextAttributes:(BOOL)forRichText;
 - (void)applyDefaultTextAttributes:(BOOL)forRichText;
 
 /* Document properties */
-- (NSDictionary *)documentPropertyToAttributeNameMappings;
-- (NSArray *)knownDocumentProperties;
+@property (nonatomic, readonly, copy) NSDictionary *documentPropertyToAttributeNameMappings;
+@property (nonatomic, readonly, copy) NSArray *knownDocumentProperties;
 - (void)clearDocumentProperties;
 - (void)setDocumentPropertiesToDefaults;
-- (BOOL)hasDocumentProperties;
+@property (nonatomic, readonly) BOOL hasDocumentProperties;
 
 /* Transient documents */
-- (BOOL)isTransient;
-- (void)setTransient:(BOOL)flag;
-- (BOOL)isTransientAndCanBeReplaced;
+@property (nonatomic, getter=isTransient) BOOL transient;
+@property (nonatomic, getter=isTransientAndCanBeReplaced, readonly) BOOL transientAndCanBeReplaced;
 
 /* Layout orientation sections */
-- (NSArray *)originalOrientationSections;
-- (void)setOriginalOrientationSections:(NSArray *)array;
+@property (nonatomic, copy) NSArray *originalOrientationSections;
 
 /* Screen fonts property */
-- (BOOL)usesScreenFonts;
-- (void)setUsesScreenFonts:(BOOL)aFlag;
+@property (nonatomic) BOOL usesScreenFonts;
 @end

@@ -51,18 +51,16 @@
 
 #import <Cocoa/Cocoa.h>
 
-enum {
+typedef NS_OPTIONS(NSUInteger, HTMLDocumentTypeOptions) {
     HTMLDocumentTypeOptionUseTransitional = (1 << 0),
     HTMLDocumentTypeOptionUseXHTML = (1 << 1)
 };
-typedef NSUInteger HTMLDocumentTypeOptions;
 
-enum {
+typedef NS_ENUM(NSInteger, HTMLStylingMode) {
     HTMLStylingUseEmbeddedCSS = 0,
     HTMLStylingUseInlineCSS = 1,
     HTMLStylingUseNoCSS = 2
 };
-typedef NSInteger HTMLStylingMode;
 
 @interface Preferences : NSWindowController {
     BOOL changingRTFFont;
@@ -74,9 +72,7 @@ typedef NSInteger HTMLStylingMode;
 - (IBAction)changePlainTextFont:(id)sender;	/* Request to change the plain text font */
 - (void)changeFont:(id)fontManager;	/* Sent by the font manager */
 
-- (NSFont *)richTextFont;
-- (void)setRichTextFont:(NSFont *)newFont;
-- (NSFont *)plainTextFont;
-- (void)setPlainTextFont:(NSFont *)newFont;
+@property (nonatomic, copy) NSFont *richTextFont;
+@property (nonatomic, copy) NSFont *plainTextFont;
 
 @end

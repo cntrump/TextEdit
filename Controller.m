@@ -60,44 +60,42 @@
 static NSDictionary *defaultValues() {
     static NSDictionary *dict = nil;
     if (!dict) {
-        dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                [NSNumber numberWithInteger:30], AutosavingDelay,
-                [NSNumber numberWithBool:NO], NumberPagesWhenPrinting,
-                [NSNumber numberWithBool:YES], WrapToFitWhenPrinting,
-                [NSNumber numberWithBool:YES], RichText, 
-                [NSNumber numberWithBool:NO], ShowPageBreaks,
-		[NSNumber numberWithBool:NO], OpenPanelFollowsMainWindow,
-		[NSNumber numberWithBool:YES], AddExtensionToNewPlainTextFiles,
-                [NSNumber numberWithInteger:90], WindowWidth, 
-                [NSNumber numberWithInteger:30], WindowHeight, 
-                [NSNumber numberWithUnsignedInteger:NoStringEncoding], PlainTextEncodingForRead,
-                [NSNumber numberWithUnsignedInteger:NoStringEncoding], PlainTextEncodingForWrite,
-		[NSNumber numberWithInteger:8], TabWidth,
-		[NSNumber numberWithInteger:50000], ForegroundLayoutToIndex,       
-                [NSNumber numberWithBool:NO], IgnoreRichText,
-		[NSNumber numberWithBool:NO], IgnoreHTML,
-                [NSNumber numberWithBool:YES], CheckSpellingAsYouType,
-                [NSNumber numberWithBool:NO], CheckGrammarWithSpelling,
-                [NSNumber numberWithBool:[NSSpellChecker isAutomaticSpellingCorrectionEnabled]], CorrectSpellingAutomatically,
-                [NSNumber numberWithBool:YES], ShowRuler,
-                [NSNumber numberWithBool:YES], SmartCopyPaste,
-                [NSNumber numberWithBool:NO], SmartQuotes,
-                [NSNumber numberWithBool:NO], SmartDashes,
-                [NSNumber numberWithBool:NO], SmartLinks,
-                [NSNumber numberWithBool:NO], DataDetectors,
-                [NSNumber numberWithBool:[NSSpellChecker isAutomaticTextReplacementEnabled]], TextReplacement,
-                [NSNumber numberWithBool:NO], SubstitutionsEnabledInRichTextOnly,
-                @"", AuthorProperty,
-                @"", CompanyProperty,
-                @"", CopyrightProperty,
-                [NSNumber numberWithBool:NO], UseXHTMLDocType,
-                [NSNumber numberWithBool:NO], UseTransitionalDocType,
-                [NSNumber numberWithBool:YES], UseEmbeddedCSS,
-                [NSNumber numberWithBool:NO], UseInlineCSS,
-                [NSNumber numberWithUnsignedInteger:NSUTF8StringEncoding], HTMLEncoding,
-                [NSNumber numberWithBool:YES], PreserveWhitespace,
-                [NSNumber numberWithBool:NO], UseScreenFonts,
-		nil];
+        dict = @{AutosavingDelay: @30,
+                NumberPagesWhenPrinting: @NO,
+                WrapToFitWhenPrinting: @YES,
+                RichText: @YES, 
+                ShowPageBreaks: @NO,
+		OpenPanelFollowsMainWindow: @NO,
+		AddExtensionToNewPlainTextFiles: @YES,
+                WindowWidth: @90, 
+                WindowHeight: @30, 
+                PlainTextEncodingForRead: @(NoStringEncoding),
+                PlainTextEncodingForWrite: @(NoStringEncoding),
+		TabWidth: @8,
+		ForegroundLayoutToIndex: @50000,       
+                IgnoreRichText: @NO,
+		IgnoreHTML: @NO,
+                CheckSpellingAsYouType: @YES,
+                CheckGrammarWithSpelling: @NO,
+                CorrectSpellingAutomatically: @([NSSpellChecker isAutomaticSpellingCorrectionEnabled]),
+                ShowRuler: @YES,
+                SmartCopyPaste: @YES,
+                SmartQuotes: @NO,
+                SmartDashes: @NO,
+                SmartLinks: @NO,
+                DataDetectors: @NO,
+                TextReplacement: @([NSSpellChecker isAutomaticTextReplacementEnabled]),
+                SubstitutionsEnabledInRichTextOnly: @NO,
+                AuthorProperty: @"",
+                CompanyProperty: @"",
+                CopyrightProperty: @"",
+                UseXHTMLDocType: @NO,
+                UseTransitionalDocType: @NO,
+                UseEmbeddedCSS: @YES,
+                UseInlineCSS: @NO,
+                HTMLEncoding: @(NSUTF8StringEncoding),
+                PreserveWhitespace: @YES,
+                UseScreenFonts: @NO};
     }
     return dict;
 }
@@ -129,7 +127,7 @@ static NSDictionary *defaultValues() {
     NSString *filename, *origFilename;
     NSURL *url = nil;
     NSError *err = nil;
-    NSString *type = [pboard availableTypeFromArray:[NSArray arrayWithObject:(NSString *)kUTTypePlainText]];
+    NSString *type = [pboard availableTypeFromArray:@[(NSString *)kUTTypePlainText]];
 
     if (type && (filename = origFilename = [pboard stringForType:type])) {
         BOOL success = NO;
@@ -147,7 +145,7 @@ static NSDictionary *defaultValues() {
         // Given that this is a one-way service (no return), we need to put up the error panel ourselves and we do not set *error.
         if (!success) {
 	    if (!err) {
-		err = [NSError errorWithDomain:NSCocoaErrorDomain code:NSFileReadInvalidFileNameError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:truncatedString(filename, PATH_MAX+10), NSFilePathErrorKey, nil]];
+		err = [NSError errorWithDomain:NSCocoaErrorDomain code:NSFileReadInvalidFileNameError userInfo:@{NSFilePathErrorKey: truncatedString(filename, PATH_MAX+10)}];
 	    }
 	    [[NSAlert alertWithError:err] runModal];
         }

@@ -72,7 +72,7 @@
 - (void)addPage;
 - (void)removePage;
 
-- (NSTextView *)firstTextView;
+@property (nonatomic, readonly, strong) NSTextView *firstTextView;
 
 - (void)printInfoUpdated;
 
@@ -84,7 +84,7 @@
 
 @implementation DocumentWindowController
 
-- (id)init {
+- (instancetype)init {
     if (self = [super initWithWindowNibName:@"DocumentWindow"]) {
 	layoutMgr = [[NSLayoutManager alloc] init];
 	[layoutMgr setDelegate:self];
@@ -122,7 +122,7 @@
     [super setDocument:doc];
     if (doc) {
         [layoutMgr bind:@"hyphenationFactor" toObject:self withKeyPath:@"document.hyphenationFactor" options:nil];
-        [[self firstTextView] bind:@"editable" toObject:self withKeyPath:@"document.readOnly" options:[NSDictionary dictionaryWithObject:NSNegateBooleanTransformerName forKey:NSValueTransformerNameBindingOption]];
+        [[self firstTextView] bind:@"editable" toObject:self withKeyPath:@"document.readOnly" options:@{NSValueTransformerNameBindingOption: NSNegateBooleanTransformerName}];
     }
     if (oldDoc != doc) {
 	if (oldDoc) {
@@ -243,7 +243,7 @@
     // process the initial container
     if ([sections count] > 0) {
         for (NSDictionary *dict in sections) {
-            id rangeValue = [dict objectForKey:NSTextLayoutSectionRange];
+            id rangeValue = dict[NSTextLayoutSectionRange];
             
             if (!rangeValue || NSLocationInRange(0, [rangeValue rangeValue])) {
                 orientation = NSTextLayoutOrientationVertical;
@@ -266,7 +266,7 @@
 
         for (cnt = 0; cnt < [self numberOfPages]; cnt++) {      // Call -numberOfPages repeatedly since it may change
             NSRect textFrame = [pagesView documentRectForPageNumber:cnt];
-            NSTextContainer *textContainer = [textContainers objectAtIndex:cnt];
+            NSTextContainer *textContainer = textContainers[cnt];
             [textContainer setContainerSize:textFrame.size];
             [[textContainer textView] setFrame:textFrame];
         }
@@ -364,7 +364,7 @@
 		if (numberOfErrors > 1) {  // More than one failure, put up a summary error (which doesn't do a good job of communicating the actual errors, but multiple attachments is a relatively rare case). For one error, we present the actual NSError we got back.
 		    // The error message will be different depending on whether all or some of the files were successfully attached.
 		    NSString *description = (numberOfErrors == [urls count]) ? NSLocalizedString(@"None of the items could be attached.", @"Title of alert indicating error during 'Attach Files...' when user tries to attach (insert) multiple files and none can be attached.") : NSLocalizedString(@"Some of the items could not be attached.", @"Title of alert indicating error during 'Attach Files...' when user tries to attach (insert) multiple files and some fail.");
-		    error = [NSError errorWithDomain:TextEditErrorDomain code:TextEditAttachFilesFailure userInfo:[NSDictionary dictionaryWithObjectsAndKeys:description, NSLocalizedDescriptionKey, NSLocalizedString(@"The files may be unreadable, or the volume they are on may be inaccessible. Please check in Finder.", @"Recommendation when 'Attach Files...' command fails"), NSLocalizedRecoverySuggestionErrorKey, nil]];
+		    error = [NSError errorWithDomain:TextEditErrorDomain code:TextEditAttachFilesFailure userInfo:@{NSLocalizedDescriptionKey: description, NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"The files may be unreadable, or the volume they are on may be inaccessible. Please check in Finder.", @"Recommendation when 'Attach Files...' command fails")}];
 		}
                     [[self window] presentError:error modalForWindow:[self window] delegate:self didPresentSelector:@selector(presenterDidPresent:soContinue:) contextInfo:CFBridgingRetain(^(BOOL didSucceed) {
                         activityCompletionHandler();
@@ -396,7 +396,7 @@
     Document *doc = [self document];
     BOOL rich = [doc isRichText];
     NSDictionary *textAttributes = [doc defaultTextAttributes:rich];
-    NSParagraphStyle *paragraphStyle = [textAttributes objectForKey:NSParagraphStyleAttributeName];
+    NSParagraphStyle *paragraphStyle = textAttributes[NSParagraphStyleAttributeName];
 
     [view setTypingAttributes:textAttributes];
     [view setDefaultParagraphStyle:paragraphStyle];
@@ -406,7 +406,7 @@
     NSTextView *view = [self firstTextView];
     Document *doc = [self document];
     NSDictionary *textAttributes = [doc defaultTextAttributes:rich];
-    NSParagraphStyle *paragraphStyle = [textAttributes objectForKey:NSParagraphStyleAttributeName];
+    NSParagraphStyle *paragraphStyle = textAttributes[NSParagraphStyleAttributeName];
     
     // Note, since the textview content changes (removing attachments and changing attributes) create undo actions inside the textview, we do not execute them here if we're undoing or redoing
     if (![[doc undoManager] isUndoing] && ![[doc undoManager] isRedoing]) {
@@ -484,7 +484,7 @@
 - (void)removePage {
     NSUInteger numberOfPages = [self numberOfPages];
     NSArray *textContainers = [[self layoutManager] textContainers];
-    NSTextContainer *lastContainer = [textContainers objectAtIndex:[textContainers count] - 1];
+    NSTextContainer *lastContainer = textContainers[[textContainers count] - 1];
     MultiplePageView *pagesView = [scrollView documentView];
     
     [pagesView setNumberOfPages:numberOfPages - 1];
@@ -511,7 +511,7 @@
     } else {
         NSArray *sections = [[self document] originalOrientationSections];
 
-        if (([sections count] > 0) && (NSTextLayoutOrientationVertical == [[[sections objectAtIndex:0] objectForKey:NSTextLayoutSectionOrientation] unsignedIntegerValue])) orientation = NSTextLayoutOrientationVertical;
+        if (([sections count] > 0) && (NSTextLayoutOrientationVertical == [sections[0][NSTextLayoutSectionOrientation] unsignedIntegerValue])) orientation = NSTextLayoutOrientationVertical;
     }
 
     if (hasMultiplePages) {
@@ -590,7 +590,7 @@
     [scrollView setHasVerticalRuler:((orientation == NSTextLayoutOrientationHorizontal) ? NO : YES)];
 
     [[self firstTextView] addObserver:self forKeyPath:@"backgroundColor" options:0 context:NULL];
-    [[self firstTextView] bind:@"editable" toObject:self withKeyPath:@"document.readOnly" options:[NSDictionary dictionaryWithObject:NSNegateBooleanTransformerName forKey:NSValueTransformerNameBindingOption]];
+    [[self firstTextView] bind:@"editable" toObject:self withKeyPath:@"document.readOnly" options:@{NSValueTransformerNameBindingOption: NSNegateBooleanTransformerName}];
     
     [[scrollView window] makeFirstResponder:[self firstTextView]];
     [[scrollView window] setInitialFirstResponder:[self firstTextView]];	// So focus won't be stolen (2934918)
@@ -651,8 +651,8 @@
             NSFont *font = [[self document] isRichText] ? [NSFont userFontOfSize:0.0] : [[NSFont userFixedPitchFontOfSize:0.0] screenFontWithRenderingMode:NSFontDefaultRenderingMode];
             NSSize size;
             size.height = ceil([[self layoutManager] defaultLineHeightForFont:font] * windowHeight);
-            size.width = [@"x" sizeWithAttributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName]].width;
-            if (size.width == 0.0) size.width = [@" " sizeWithAttributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName]].width; /* try for space width */
+            size.width = [@"x" sizeWithAttributes:@{NSFontAttributeName: font}].width;
+            if (size.width == 0.0) size.width = [@" " sizeWithAttributes:@{NSFontAttributeName: font}].width; /* try for space width */
             if (size.width == 0.0) size.width = [font maximumAdvancement].width; /* or max width */
             size.width  = ceil(size.width * windowWidth);
             [self resizeWindowForViewSize:size];
@@ -698,7 +698,7 @@
             if (range.length > 0) {
                 if (!sections) sections = [NSMutableArray arrayWithCapacity:0];
                 
-                [sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:layoutOrientation], NSTextLayoutSectionOrientation, [NSValue valueWithRange:range], NSTextLayoutSectionRange, nil]];
+                [sections addObject:@{NSTextLayoutSectionOrientation: [NSNumber numberWithInteger:layoutOrientation], NSTextLayoutSectionRange: [NSValue valueWithRange:range]}];
                 
                 range.length = 0;
             }
@@ -720,7 +720,7 @@
     if (range.length > 0) {
         if (!sections) sections = [NSMutableArray arrayWithCapacity:0];
         
-        [sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:layoutOrientation], NSTextLayoutSectionOrientation, [NSValue valueWithRange:range], NSTextLayoutSectionRange, nil]];
+        [sections addObject:@{NSTextLayoutSectionOrientation: [NSNumber numberWithInteger:layoutOrientation], NSTextLayoutSectionRange: [NSValue valueWithRange:range]}];
     }
     
     return sections;
@@ -918,7 +918,7 @@
                     }
                 }
                 // Other file URLs are displayed in Finder
-                [workspace activateFileViewerSelectingURLs:[NSArray arrayWithObject:linkURL]];
+                [workspace activateFileViewerSelectingURLs:@[linkURL]];
                 return YES;
             }
         } else {
@@ -951,7 +951,7 @@
 - (NSArray *)textView:(NSTextView *)view writablePasteboardTypesForCell:(id <NSTextAttachmentCell>)cell atIndex:(NSUInteger)charIndex {
     NSString *name = [[[cell attachment] fileWrapper] filename];
     NSURL *docURL = [[self document] fileURL];
-    return (docURL && [docURL isFileURL] && name) ? [NSArray arrayWithObject:NSFilenamesPboardType] : nil;
+    return (docURL && [docURL isFileURL] && name) ? @[NSFilenamesPboardType] : nil;
 }
 
 - (BOOL)textView:(NSTextView *)view writeCell:(id <NSTextAttachmentCell>)cell atIndex:(NSUInteger)charIndex toPasteboard:(NSPasteboard *)pboard type:(NSString *)type {
@@ -961,7 +961,7 @@
 	NSString *docPath = [docURL path];
 	NSString *pathToAttachment = [docPath stringByAppendingPathComponent:name];
         if (pathToAttachment) {
-	    [pboard setPropertyList:[NSArray arrayWithObject:pathToAttachment] forType:NSFilenamesPboardType];
+	    [pboard setPropertyList:@[pathToAttachment] forType:NSFilenamesPboardType];
 	    return YES;
 	}
     }

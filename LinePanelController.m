@@ -55,7 +55,7 @@
 
 @implementation LinePanelController
 
-- (id)init {
+- (instancetype)init {
     return [super initWithWindowNibName:@"SelectLinePanel"];
 }
 
@@ -143,12 +143,12 @@
     if ([firstResponder isKindOfClass:[NSTextView class]]) {
 	NSInteger fromLine, toLine, relative;
 	if (![self parseLineDescription:desc fromLineSpec:&fromLine toLineSpec:&toLine relative:&relative]) {
-	    if (error) *error = [NSError errorWithDomain:TextEditErrorDomain code:TextEditInvalidLineSpecification userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Invalid line specification \\U201c%@\\U201d.", @"LinePanel", @"Error message indicating invalid line specification for 'Select Line'"), truncatedString(desc, 100)], NSLocalizedDescriptionKey, NSLocalizedStringFromTable(@"Enter a line number or a range of line numbers to select.", @"LinePanel", @"Suggestion for correcting invalid line specification"), NSLocalizedRecoverySuggestionErrorKey, nil]];
+	    if (error) *error = [NSError errorWithDomain:TextEditErrorDomain code:TextEditInvalidLineSpecification userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedStringFromTable(@"Invalid line specification \\U201c%@\\U201d.", @"LinePanel", @"Error message indicating invalid line specification for 'Select Line'"), truncatedString(desc, 100)], NSLocalizedRecoverySuggestionErrorKey: NSLocalizedStringFromTable(@"Enter a line number or a range of line numbers to select.", @"LinePanel", @"Suggestion for correcting invalid line specification")}];
 	    return NO;
 	}
 	NSRange range;
         if (![self getRange:&range inTextView:firstResponder fromLineSpec:fromLine toLineSpec:toLine relative:relative]) {
-	    if (error) *error = [NSError errorWithDomain:TextEditErrorDomain code:TextEditOutOfRangeLineSpecification userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Invalid line specification \\U201c%@\\U201d.", @"LinePanel", @"Error message indicating invalid line specification for 'Select Line'"), truncatedString(desc, 100)], NSLocalizedDescriptionKey, NSLocalizedStringFromTable(@"Enter a line number or a range of line numbers to select.", @"LinePanel", @"Suggestion for correcting invalid line specification"), NSLocalizedRecoverySuggestionErrorKey, nil]];
+	    if (error) *error = [NSError errorWithDomain:TextEditErrorDomain code:TextEditOutOfRangeLineSpecification userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedStringFromTable(@"Invalid line specification \\U201c%@\\U201d.", @"LinePanel", @"Error message indicating invalid line specification for 'Select Line'"), truncatedString(desc, 100)], NSLocalizedRecoverySuggestionErrorKey: NSLocalizedStringFromTable(@"Enter a line number or a range of line numbers to select.", @"LinePanel", @"Suggestion for correcting invalid line specification")}];
 	    return NO;
 	}
 	[firstResponder setSelectedRange:range];

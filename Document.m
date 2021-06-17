@@ -99,7 +99,7 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     return nil;
 }
 
-- (id)init {
+- (instancetype)init {
     if ((self = [super init])) {
         [[self undoManager] disableUndoRegistration];
     
@@ -133,18 +133,16 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     // Use of dispatch_once() makes the initialization thread-safe, and it needs to be, since multiple documents can be opened concurrently
     static dispatch_once_t once = 0; 
     dispatch_once(&once, ^{
-	documentMappings = [[NSDictionary alloc] initWithObjectsAndKeys:
-            (NSString *)kUTTypeText, NSPlainTextDocumentType,
-            (NSString *)kUTTypeRTF, NSRTFTextDocumentType,
-            (NSString *)kUTTypeRTFD, NSRTFDTextDocumentType,
-            SimpleTextType, NSMacSimpleTextDocumentType,
-            (NSString *)kUTTypeHTML, NSHTMLTextDocumentType,
-	    Word97Type, NSDocFormatTextDocumentType,
-	    Word2007Type, NSOfficeOpenXMLTextDocumentType,
-	    Word2003XMLType, NSWordMLTextDocumentType,
-	    OpenDocumentTextType, NSOpenDocumentTextDocumentType,
-            (NSString *)kUTTypeWebArchive, NSWebArchiveTextDocumentType,
-	    nil];
+	documentMappings = @{NSPlainTextDocumentType: (NSString *)kUTTypeText,
+            NSRTFTextDocumentType: (NSString *)kUTTypeRTF,
+            NSRTFDTextDocumentType: (NSString *)kUTTypeRTFD,
+            NSMacSimpleTextDocumentType: SimpleTextType,
+            NSHTMLTextDocumentType: (NSString *)kUTTypeHTML,
+	    NSDocFormatTextDocumentType: Word97Type,
+	    NSOfficeOpenXMLTextDocumentType: Word2007Type,
+	    NSWordMLTextDocumentType: Word2003XMLType,
+	    NSOpenDocumentTextDocumentType: OpenDocumentTextType,
+            NSWebArchiveTextDocumentType: (NSString *)kUTTypeWebArchive};
         });
     return documentMappings;
 }
@@ -169,16 +167,16 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     
     [[self undoManager] disableUndoRegistration];
     
-    [options setObject:absoluteURL forKey:NSBaseURLDocumentOption];
+    options[NSBaseURLDocumentOption] = absoluteURL;
     if (encoding != NoStringEncoding) {
-        [options setObject:[NSNumber numberWithUnsignedInteger:encoding] forKey:NSCharacterEncodingDocumentOption];
+        options[NSCharacterEncodingDocumentOption] = @(encoding);
     }
     [self setEncoding:encoding];
     
     // Check type to see if we should load the document as plain. Note that this check isn't always conclusive, which is why we do another check below, after the document has been loaded (and correctly categorized).
     NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
     if ((ignoreRTF && ([workspace type:typeName conformsToType:(NSString *)kUTTypeRTF] || [workspace type:typeName conformsToType:Word2003XMLType])) || (ignoreHTML && [workspace type:typeName conformsToType:(NSString *)kUTTypeHTML]) || [self isOpenedIgnoringRichText]) {
-        [options setObject:NSPlainTextDocumentType forKey:NSDocumentTypeDocumentOption]; // Force plain
+        options[NSDocumentTypeDocumentOption] = NSPlainTextDocumentType; // Force plain
         typeName = (NSString *)kUTTypeText;
         [self setOpenedIgnoringRichText:YES];
     }
@@ -209,18 +207,18 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
 	    return NO;	// return NO on error; outError has already been set
 	}
 	
-	docType = [docAttrs objectForKey:NSDocumentTypeDocumentAttribute];
+	docType = docAttrs[NSDocumentTypeDocumentAttribute];
 
 	// First check to see if the document was rich and should have been loaded as plain
-	if (![[options objectForKey:NSDocumentTypeDocumentOption] isEqualToString:NSPlainTextDocumentType] && ((ignoreHTML && [docType isEqual:NSHTMLTextDocumentType]) || (ignoreRTF && ([docType isEqual:NSRTFTextDocumentType] || [docType isEqual:NSWordMLTextDocumentType])))) {
+	if (![options[NSDocumentTypeDocumentOption] isEqualToString:NSPlainTextDocumentType] && ((ignoreHTML && [docType isEqual:NSHTMLTextDocumentType]) || (ignoreRTF && ([docType isEqual:NSRTFTextDocumentType] || [docType isEqual:NSWordMLTextDocumentType])))) {
 	    [text endEditing];
 	    [[text mutableString] setString:@""];
-	    [options setObject:NSPlainTextDocumentType forKey:NSDocumentTypeDocumentOption];
+	    options[NSDocumentTypeDocumentOption] = NSPlainTextDocumentType;
 	    typeName = (NSString *)kUTTypeText;
 	    [self setOpenedIgnoringRichText:YES];
 	    retry = YES;
 	} else {
-	    NSString *newFileType = [[self textDocumentTypeToTextEditDocumentTypeMappingTable] objectForKey:docType];
+	    NSString *newFileType = [self textDocumentTypeToTextEditDocumentTypeMappingTable][docType];
 	    if (newFileType) {
             typeName = newFileType;
 	    } else {
@@ -238,33 +236,33 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     layoutMgrEnum = [layoutMgrs objectEnumerator]; // rewind
     while ((layoutMgr = [layoutMgrEnum nextObject])) [text addLayoutManager:layoutMgr];   // Add the layout managers back
     
-    val = [docAttrs objectForKey:NSCharacterEncodingDocumentAttribute];
+    val = docAttrs[NSCharacterEncodingDocumentAttribute];
     [self setEncoding:(val ? [val unsignedIntegerValue] : NoStringEncoding)];
     
-    if ((val = [docAttrs objectForKey:NSConvertedDocumentAttribute])) {
+    if ((val = docAttrs[NSConvertedDocumentAttribute])) {
         [self setConverted:([val integerValue] > 0)];	// Indicates filtered
         [self setLossy:([val integerValue] < 0)];	// Indicates lossily loaded
     }
     
     /* If the document has a stored value for view mode, use it. Otherwise wrap to window. */
-    if ((val = [docAttrs objectForKey:NSViewModeDocumentAttribute])) {
+    if ((val = docAttrs[NSViewModeDocumentAttribute])) {
         [self setHasMultiplePages:([val integerValue] == 1)];
-        if ((val = [docAttrs objectForKey:NSViewZoomDocumentAttribute])) {
+        if ((val = docAttrs[NSViewZoomDocumentAttribute])) {
             [self setScaleFactor:([val doubleValue] / 100.0)];
         }
     } else [self setHasMultiplePages:NO];
     
     [self willChangeValueForKey:@"printInfo"];
-    if ((val = [docAttrs objectForKey:NSLeftMarginDocumentAttribute])) [[self printInfo] setLeftMargin:[val doubleValue]];
-    if ((val = [docAttrs objectForKey:NSRightMarginDocumentAttribute])) [[self printInfo] setRightMargin:[val doubleValue]];
-    if ((val = [docAttrs objectForKey:NSBottomMarginDocumentAttribute])) [[self printInfo] setBottomMargin:[val doubleValue]];
-    if ((val = [docAttrs objectForKey:NSTopMarginDocumentAttribute])) [[self printInfo] setTopMargin:[val doubleValue]];
+    if ((val = docAttrs[NSLeftMarginDocumentAttribute])) [[self printInfo] setLeftMargin:[val doubleValue]];
+    if ((val = docAttrs[NSRightMarginDocumentAttribute])) [[self printInfo] setRightMargin:[val doubleValue]];
+    if ((val = docAttrs[NSBottomMarginDocumentAttribute])) [[self printInfo] setBottomMargin:[val doubleValue]];
+    if ((val = docAttrs[NSTopMarginDocumentAttribute])) [[self printInfo] setTopMargin:[val doubleValue]];
     [self didChangeValueForKey:@"printInfo"];
     
     /* Pre MacOSX versions of TextEdit wrote out the view (window) size in PaperSize.
 	If we encounter a non-MacOSX RTF file, and it's written by TextEdit, use PaperSize as ViewSize */
-    viewSizeVal = [docAttrs objectForKey:NSViewSizeDocumentAttribute];
-    paperSizeVal = [docAttrs objectForKey:NSPaperSizeDocumentAttribute];
+    viewSizeVal = docAttrs[NSViewSizeDocumentAttribute];
+    paperSizeVal = docAttrs[NSPaperSizeDocumentAttribute];
     if (paperSizeVal && NSEqualSizes([paperSizeVal sizeValue], NSZeroSize)) paperSizeVal = nil;	// Protect against some old documents with 0 paper size
     
     if (viewSizeVal) {
@@ -272,7 +270,7 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
         if (paperSizeVal) [self setPaperSize:[paperSizeVal sizeValue]];
     } else {	// No ViewSize...
         if (paperSizeVal) {	// See if PaperSize should be used as ViewSize; if so, we also have some tweaking to do on it
-            val = [docAttrs objectForKey:NSCocoaVersionDocumentAttribute];
+            val = docAttrs[NSCocoaVersionDocumentAttribute];
             if (val && ([val integerValue] < 100)) {	// Indicates old RTF file; value described in AppKit/NSAttributedString.h
                 NSSize size = [paperSizeVal sizeValue];
                 if (size.width > 0 && size.height > 0 && ![self hasMultiplePages]) {
@@ -285,18 +283,18 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
         }
     }
     
-    [self setHyphenationFactor:(val = [docAttrs objectForKey:NSHyphenationFactorDocumentAttribute]) ? [val floatValue] : 0];
-    [self setBackgroundColor:(val = [docAttrs objectForKey:NSBackgroundColorDocumentAttribute]) ? val : [NSColor textBackgroundColor]];
+    [self setHyphenationFactor:(val = docAttrs[NSHyphenationFactorDocumentAttribute]) ? [val floatValue] : 0];
+    [self setBackgroundColor:(val = docAttrs[NSBackgroundColorDocumentAttribute]) ? val : [NSColor textBackgroundColor]];
     
     // Set the document properties, generically, going through key value coding
     NSDictionary *map = [self documentPropertyToAttributeNameMappings];
-    for (NSString *property in [self knownDocumentProperties]) [self setValue:[docAttrs objectForKey:[map objectForKey:property]] forKey:property];	// OK to set nil to clear
+    for (NSString *property in [self knownDocumentProperties]) [self setValue:docAttrs[map[property]] forKey:property];	// OK to set nil to clear
     
-    [self setReadOnly:((val = [docAttrs objectForKey:NSReadOnlyDocumentAttribute]) && ([val integerValue] > 0))];
+    [self setReadOnly:((val = docAttrs[NSReadOnlyDocumentAttribute]) && ([val integerValue] > 0))];
     
-    [self setOriginalOrientationSections:[docAttrs objectForKey:NSTextLayoutSectionsAttribute]];
+    [self setOriginalOrientationSections:docAttrs[NSTextLayoutSectionsAttribute]];
 
-    [self setUsesScreenFonts:[self isRichText] ? [[docAttrs objectForKey:NSUsesScreenFontsDocumentAttribute] boolValue] : YES];
+    [self setUsesScreenFonts:[self isRichText] ? [docAttrs[NSUsesScreenFontsDocumentAttribute] boolValue] : YES];
 
     [[self undoManager] enableUndoRegistration];
     
@@ -307,36 +305,36 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     static NSParagraphStyle *defaultRichParaStyle = nil;
     NSMutableDictionary *textAttributes = [[NSMutableDictionary alloc] initWithCapacity:2];
     if (forRichText) {
-	[textAttributes setObject:[NSFont userFontOfSize:0.0] forKey:NSFontAttributeName];
+	textAttributes[NSFontAttributeName] = [NSFont userFontOfSize:0.0];
 	if (defaultRichParaStyle == nil) {	// We do this once...
 	    NSInteger cnt;
             NSString *measurementUnits = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleMeasurementUnits"];
             CGFloat tabInterval = ([@"Centimeters" isEqual:measurementUnits]) ? (72.0 / 2.54) : (72.0 / 2.0);  // Every cm or half inch
 	    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
             NSTextTabType type = ((NSWritingDirectionRightToLeft == [NSParagraphStyle defaultWritingDirectionForLanguage:nil]) ? NSRightTabStopType : NSLeftTabStopType);
-	    [paraStyle setTabStops:[NSArray array]];	// This first clears all tab stops
+	    [paraStyle setTabStops:@[]];	// This first clears all tab stops
 	    for (cnt = 0; cnt < 12; cnt++) {	// Add 12 tab stops, at desired intervals...
                 NSTextTab *tabStop = [[NSTextTab alloc] initWithType:type location:tabInterval * (cnt + 1)];
 		[paraStyle addTabStop:tabStop];
 	    }
 	    defaultRichParaStyle = [paraStyle copy];
 	}
-	[textAttributes setObject:defaultRichParaStyle forKey:NSParagraphStyleAttributeName];
+	textAttributes[NSParagraphStyleAttributeName] = defaultRichParaStyle;
     } else {
 	NSFont *plainFont = [NSFont userFixedPitchFontOfSize:0.0];
         NSFont *charWidthFont = [plainFont screenFontWithRenderingMode:NSFontDefaultRenderingMode];
 	NSInteger tabWidth = [[NSUserDefaults standardUserDefaults] integerForKey:TabWidth];
-	CGFloat charWidth = [@" " sizeWithAttributes:[NSDictionary dictionaryWithObject:charWidthFont forKey:NSFontAttributeName]].width;
+	CGFloat charWidth = [@" " sizeWithAttributes:@{NSFontAttributeName: charWidthFont}].width;
         if (charWidth == 0) charWidth = [charWidthFont maximumAdvancement].width;
 	
 	// Now use a default paragraph style, but with the tab width adjusted
 	NSMutableParagraphStyle *mStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-	[mStyle setTabStops:[NSArray array]];
+	[mStyle setTabStops:@[]];
 	[mStyle setDefaultTabInterval:(charWidth * tabWidth)];
-        [textAttributes setObject:[mStyle copy] forKey:NSParagraphStyleAttributeName];
+        textAttributes[NSParagraphStyleAttributeName] = [mStyle copy];
 	
 	// Also set the font
-	[textAttributes setObject:plainFont forKey:NSFontAttributeName];
+	textAttributes[NSFontAttributeName] = plainFont;
     }
     return textAttributes;
 }
@@ -531,14 +529,13 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     static NSDictionary *dict = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-	    NSCompanyDocumentAttribute, @"company", 
-	    NSAuthorDocumentAttribute, @"author", 
-	    NSKeywordsDocumentAttribute, @"keywords", 
-	    NSCopyrightDocumentAttribute, @"copyright", 
-	    NSTitleDocumentAttribute, @"title", 
-	    NSSubjectDocumentAttribute, @"subject", 
-	    NSCommentDocumentAttribute, @"comment", nil];
+        dict = @{@"company": NSCompanyDocumentAttribute, 
+	    @"author": NSAuthorDocumentAttribute, 
+	    @"keywords": NSKeywordsDocumentAttribute, 
+	    @"copyright": NSCopyrightDocumentAttribute, 
+	    @"title": NSTitleDocumentAttribute, 
+	    @"subject": NSSubjectDocumentAttribute, 
+	    @"comment": NSCommentDocumentAttribute};
     });
     return dict;
 }
@@ -607,7 +604,7 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
     BOOL multiPage = [self hasMultiplePages];
     
     if ([[self windowControllers] count] == 0) [self makeWindowControllers];
-    NSView *documentView = [[[self windowControllers] objectAtIndex:0] documentView];
+    NSView *documentView = [[self windowControllers][0] documentView];
     
     id printingView;
     if (multiPage) {    // If already in multiple-page ("wrap-to-page") mode, we simply use the display view for printing
@@ -645,7 +642,7 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
 }
 
 - (NSTextView *)firstTextView {
-    return [(id)[[self windowControllers] objectAtIndex:0] firstTextView];
+    return [(id)[self windowControllers][0] firstTextView];
 }
 
 - (NSPrintInfo *)printInfo {
@@ -709,7 +706,7 @@ NSString *OpenDocumentTextType = @"org.oasis-open.opendocument.text";
 - (void)appendPlainTextExtensionChanged:(id)sender {
     NSSavePanel *panel = (NSSavePanel *)[sender window];
     [panel setAllowsOtherFileTypes:[sender state]];
-    [panel setAllowedFileTypes:[sender state] ? [NSArray arrayWithObject:(NSString *)kUTTypePlainText] : nil];
+    [panel setAllowedFileTypes:[sender state] ? @[(NSString *)kUTTypePlainText] : nil];
 }
 
 - (void)encodingPopupChanged:(NSPopUpButton *)popup {
@@ -828,7 +825,7 @@ CGFloat defaultTextPadding(void) {
 	
 	// Documents that contain attachments can only be saved in formats that support embedded graphics.
 	if (!ignoreTemporary && [textStorage containsAttachments]) {
-	    [outArray setArray:[NSArray arrayWithObjects:(NSString *)kUTTypeRTFD, (NSString *)kUTTypeWebArchive, nil]];
+	    [outArray setArray:@[(NSString *)kUTTypeRTFD, (NSString *)kUTTypeWebArchive]];
 	}
     }
     return outArray;
@@ -888,58 +885,44 @@ In addition we overwrite this method as a way to tell that the document has been
                 recoverySuggestion = NSLocalizedString(@"This document must be converted to RTF before it can be modified.",
                                         @"Contents of alert panel prompting the user to convert to RTF.");
             }
-            return [NSError errorWithDomain:TextEditErrorDomain code:TextEditSaveErrorWritableTypeRequired userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-                description, NSLocalizedDescriptionKey,
-                recoverySuggestion, NSLocalizedRecoverySuggestionErrorKey,
-                [NSArray arrayWithObjects:
-                    NSLocalizedString(@"Convert", @"Button choice that allows the user to convert the document."),
+            return [NSError errorWithDomain:TextEditErrorDomain code:TextEditSaveErrorWritableTypeRequired userInfo:@{NSLocalizedDescriptionKey: description,
+                NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion,
+                NSLocalizedRecoveryOptionsErrorKey: @[NSLocalizedString(@"Convert", @"Button choice that allows the user to convert the document."),
                     NSLocalizedString(@"Cancel", @"Button choice that allows the user to cancel."),
-                    NSLocalizedString(@"Duplicate", @"Button choice that allows the user to duplicate the document.")
-                , nil], NSLocalizedRecoveryOptionsErrorKey,
-                self, NSRecoveryAttempterErrorKey,
-                nil]];
+                    NSLocalizedString(@"Duplicate", @"Button choice that allows the user to duplicate the document.")],
+                NSRecoveryAttempterErrorKey: self}];
         }
         case TextEditSaveErrorConvertedDocument: {
             NSString *newFormatName = [textStorage containsAttachments] ? NSLocalizedString(@"rich text with graphics (RTFD)", @"Rich text with graphics file format name, displayed in alert") 
                                       : NSLocalizedString(@"rich text", @"Rich text file format name, displayed in alert");
-            return [NSError errorWithDomain:TextEditErrorDomain code:TextEditSaveErrorConvertedDocument userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-                        NSLocalizedString(
+            return [NSError errorWithDomain:TextEditErrorDomain code:TextEditSaveErrorConvertedDocument userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(
                             @"Are you sure you want to edit this document?",
-                            @"Title of alert panel asking the user whether he wants to edit a converted document."), NSLocalizedDescriptionKey,
-                [NSString stringWithFormat:NSLocalizedString(@"This document was converted from a format that TextEdit cannot save. It will be saved in %@ format.",
-                            @"Contents of alert panel informing user that the document is converted and cannot be written in its original format."), newFormatName], NSLocalizedRecoverySuggestionErrorKey, 
-                [NSArray arrayWithObjects:
-                    NSLocalizedString(@"Edit", @"Button choice that allows the user to save the document."),
+                            @"Title of alert panel asking the user whether he wants to edit a converted document."),
+                NSLocalizedRecoverySuggestionErrorKey: [NSString stringWithFormat:NSLocalizedString(@"This document was converted from a format that TextEdit cannot save. It will be saved in %@ format.",
+                            @"Contents of alert panel informing user that the document is converted and cannot be written in its original format."), newFormatName], 
+                NSLocalizedRecoveryOptionsErrorKey: @[NSLocalizedString(@"Edit", @"Button choice that allows the user to save the document."),
                     NSLocalizedString(@"Cancel", @"Button choice that allows the user to cancel."),
-                    NSLocalizedString(@"Duplicate", @"Button choice that allows the user to duplicate the document.")
-                    , nil], NSLocalizedRecoveryOptionsErrorKey,
-                self, NSRecoveryAttempterErrorKey,
-                nil]];
+                    NSLocalizedString(@"Duplicate", @"Button choice that allows the user to duplicate the document.")],
+                NSRecoveryAttempterErrorKey: self}];
         }
         case TextEditSaveErrorLossyDocument: {
-            return [NSError errorWithDomain:TextEditErrorDomain code:TextEditSaveErrorLossyDocument userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-                NSLocalizedString(@"Are you sure you want to modify the document in place?", @"Title of alert panel which brings up a warning about saving over the same document"), NSLocalizedDescriptionKey,
-                NSLocalizedString(@"Modifying the document in place might cause you to lose some of the original formatting.  Would you like to duplicate the document first?", @"Contents of alert panel informing user that they need to supply a new file name because the save might be lossy"), NSLocalizedRecoverySuggestionErrorKey,
-                [NSArray arrayWithObjects:
-                    NSLocalizedString(@"Duplicate", @"Button choice that allows the user to duplicate the document."),
+            return [NSError errorWithDomain:TextEditErrorDomain code:TextEditSaveErrorLossyDocument userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Are you sure you want to modify the document in place?", @"Title of alert panel which brings up a warning about saving over the same document"),
+                NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Modifying the document in place might cause you to lose some of the original formatting.  Would you like to duplicate the document first?", @"Contents of alert panel informing user that they need to supply a new file name because the save might be lossy"),
+                NSLocalizedRecoveryOptionsErrorKey: @[NSLocalizedString(@"Duplicate", @"Button choice that allows the user to duplicate the document."),
                     NSLocalizedString(@"Cancel", @"Button choice that allows the user to cancel."),
-                    NSLocalizedString(@"Overwrite", @"Button choice allowing user to overwrite the document."), nil], NSLocalizedRecoveryOptionsErrorKey,
-                self, NSRecoveryAttempterErrorKey,
-                nil]];
+                    NSLocalizedString(@"Overwrite", @"Button choice allowing user to overwrite the document.")],
+                NSRecoveryAttempterErrorKey: self}];
         }
         case TextEditSaveErrorEncodingInapplicable: {
             NSUInteger enc = [self encodingForSaving];
             if (enc == NoStringEncoding) enc = [self encoding];
-            return [NSError errorWithDomain:TextEditErrorDomain code:TextEditSaveErrorEncodingInapplicable userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-                        [NSString stringWithFormat:NSLocalizedString(@"This document can no longer be saved using its original %@ encoding.", @"Title of alert panel informing user that the file's string encoding needs to be changed."), [NSString localizedNameOfStringEncoding:enc]], NSLocalizedDescriptionKey,
-                        NSLocalizedString(@"Please choose another encoding (such as UTF-8).", @"Subtitle of alert panel informing user that the file's string encoding needs to be changed"), NSLocalizedRecoverySuggestionErrorKey,
-                        NSLocalizedString(@"The specified text encoding isn\\U2019t applicable.",
-                            @"Failure reason stating that the text encoding is not applicable."), NSLocalizedFailureReasonErrorKey,
-                        [NSArray arrayWithObjects:
-                            NSLocalizedString(@"OK", @"OK"),
-                            NSLocalizedString(@"Cancel", @"Button choice that allows the user to cancel."), nil], NSLocalizedRecoveryOptionsErrorKey,
-                        self, NSRecoveryAttempterErrorKey,
-                        nil]];
+            return [NSError errorWithDomain:TextEditErrorDomain code:TextEditSaveErrorEncodingInapplicable userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"This document can no longer be saved using its original %@ encoding.", @"Title of alert panel informing user that the file's string encoding needs to be changed."), [NSString localizedNameOfStringEncoding:enc]],
+                        NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Please choose another encoding (such as UTF-8).", @"Subtitle of alert panel informing user that the file's string encoding needs to be changed"),
+                        NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"The specified text encoding isn\\U2019t applicable.",
+                            @"Failure reason stating that the text encoding is not applicable."),
+                        NSLocalizedRecoveryOptionsErrorKey: @[NSLocalizedString(@"OK", @"OK"),
+                            NSLocalizedString(@"Cancel", @"Button choice that allows the user to cancel.")],
+                        NSRecoveryAttempterErrorKey: self}];
         }
         
     }
@@ -1110,21 +1093,21 @@ In addition we overwrite this method as a way to tell that the document has been
     
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 	[NSValue valueWithSize:[self paperSize]], NSPaperSizeDocumentAttribute, 
-	[NSNumber numberWithInteger:[self isReadOnly] ? 1 : 0], NSReadOnlyDocumentAttribute, 
-	[NSNumber numberWithFloat:[self hyphenationFactor]], NSHyphenationFactorDocumentAttribute, 
-	[NSNumber numberWithDouble:[[self printInfo] leftMargin]], NSLeftMarginDocumentAttribute, 
-	[NSNumber numberWithDouble:[[self printInfo] rightMargin]], NSRightMarginDocumentAttribute, 
-	[NSNumber numberWithDouble:[[self printInfo] bottomMargin]], NSBottomMarginDocumentAttribute, 
-	[NSNumber numberWithDouble:[[self printInfo] topMargin]], NSTopMarginDocumentAttribute, 
-	[NSNumber numberWithInteger:[self hasMultiplePages] ? 1 : 0], NSViewModeDocumentAttribute,
-	[NSNumber numberWithBool:[self usesScreenFonts]], NSUsesScreenFontsDocumentAttribute,
+	@([self isReadOnly] ? 1 : 0), NSReadOnlyDocumentAttribute, 
+	@([self hyphenationFactor]), NSHyphenationFactorDocumentAttribute, 
+	@([[self printInfo] leftMargin]), NSLeftMarginDocumentAttribute, 
+	@([[self printInfo] rightMargin]), NSRightMarginDocumentAttribute, 
+	@([[self printInfo] bottomMargin]), NSBottomMarginDocumentAttribute, 
+	@([[self printInfo] topMargin]), NSTopMarginDocumentAttribute, 
+	@([self hasMultiplePages] ? 1 : 0), NSViewModeDocumentAttribute,
+	@([self usesScreenFonts]), NSUsesScreenFontsDocumentAttribute,
 	nil];
     NSString *docType = nil;
     id val = nil; // temporary values
     
     NSSize size = [self viewSize];
     if (!NSEqualSizes(size, NSZeroSize)) {
-	[dict setObject:[NSValue valueWithSize:size] forKey:NSViewSizeDocumentAttribute];
+	dict[NSViewSizeDocumentAttribute] = [NSValue valueWithSize:size];
     }
     
     // TextEdit knows how to save all these types, including their super-types. It does not know how to save any of their potential subtypes. Hence, the conformance check is the reverse of the usual pattern.
@@ -1143,9 +1126,9 @@ In addition we overwrite this method as a way to tell that the document has been
     else if ([workspace type:(NSString *)kUTTypeWebArchive conformsToType:typeName]) docType = NSWebArchiveTextDocumentType;
     else [NSException raise:NSInvalidArgumentException format:@"%@ is not a recognized document type.", typeName];
     
-    if (docType) [dict setObject:docType forKey:NSDocumentTypeDocumentAttribute];
-    if ([self hasMultiplePages] && ([self scaleFactor] != 1.0)) [dict setObject:[NSNumber numberWithDouble:[self scaleFactor] * 100.0] forKey:NSViewZoomDocumentAttribute];
-    if ((val = [self backgroundColor])) [dict setObject:val forKey:NSBackgroundColorDocumentAttribute];
+    if (docType) dict[NSDocumentTypeDocumentAttribute] = docType;
+    if ([self hasMultiplePages] && ([self scaleFactor] != 1.0)) dict[NSViewZoomDocumentAttribute] = @([self scaleFactor] * 100.0);
+    if ((val = [self backgroundColor])) dict[NSBackgroundColorDocumentAttribute] = val;
     
     if (docType == NSPlainTextDocumentType) {
         enc = [self encoding];
@@ -1153,12 +1136,12 @@ In addition we overwrite this method as a way to tell that the document has been
             enc = documentEncodingForSaving;
         }
         if (enc == NoStringEncoding) enc = [self suggestedDocumentEncoding];
-        [dict setObject:[NSNumber numberWithUnsignedInteger:enc] forKey:NSCharacterEncodingDocumentAttribute];
+        dict[NSCharacterEncodingDocumentAttribute] = @(enc);
     } else if (docType == NSHTMLTextDocumentType || docType == NSWebArchiveTextDocumentType) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSMutableArray *excludedElements = [NSMutableArray array];
         if (![defaults boolForKey:UseXHTMLDocType]) [excludedElements addObject:@"XML"];
-        if (![defaults boolForKey:UseTransitionalDocType]) [excludedElements addObjectsFromArray:[NSArray arrayWithObjects:@"APPLET", @"BASEFONT", @"CENTER", @"DIR", @"FONT", @"ISINDEX", @"MENU", @"S", @"STRIKE", @"U", nil]];
+        if (![defaults boolForKey:UseTransitionalDocType]) [excludedElements addObjectsFromArray:@[@"APPLET", @"BASEFONT", @"CENTER", @"DIR", @"FONT", @"ISINDEX", @"MENU", @"S", @"STRIKE", @"U"]];
         if (![defaults boolForKey:UseEmbeddedCSS]) {
             [excludedElements addObject:@"STYLE"];
             if (![defaults boolForKey:UseInlineCSS]) [excludedElements addObject:@"SPAN"];
@@ -1168,18 +1151,18 @@ In addition we overwrite this method as a way to tell that the document has been
             [excludedElements addObject:@"Apple-converted-tab"];
             [excludedElements addObject:@"Apple-interchange-newline"];
         }
-        [dict setObject:excludedElements forKey:NSExcludedElementsDocumentAttribute];
-        [dict setObject:[defaults objectForKey:HTMLEncoding] forKey:NSCharacterEncodingDocumentAttribute];
-        [dict setObject:[NSNumber numberWithInteger:2] forKey:NSPrefixSpacesDocumentAttribute];
+        dict[NSExcludedElementsDocumentAttribute] = excludedElements;
+        dict[NSCharacterEncodingDocumentAttribute] = [defaults objectForKey:HTMLEncoding];
+        dict[NSPrefixSpacesDocumentAttribute] = @2;
     }
         
     // Set the text layout orientation for each page
-    if ((val = [[[self windowControllers] objectAtIndex:0] layoutOrientationSections])) [dict setObject:val forKey:NSTextLayoutSectionsAttribute];
+    if ((val = [[self windowControllers][0] layoutOrientationSections])) dict[NSTextLayoutSectionsAttribute] = val;
 
     // Set the document properties, generically, going through key value coding
     for (NSString *property in [self knownDocumentProperties]) {
 	id value = [self valueForKey:property];
-	if (value && ![value isEqual:@""] && ![value isEqual:[NSArray array]]) [dict setObject:value forKey:[[self documentPropertyToAttributeNameMappings] objectForKey:property]];
+	if (value && ![value isEqual:@""] && ![value isEqual:@[]]) dict[[self documentPropertyToAttributeNameMappings][property]] = value;
     }
     
     NSFileWrapper *result = nil;
@@ -1249,7 +1232,7 @@ In addition we overwrite this method as a way to tell that the document has been
 	[extCheckbox setAction:@selector(appendPlainTextExtensionChanged:)];
 	[extCheckbox setTarget:self];
 	if (addExt) {
-	    [savePanel setAllowedFileTypes:[NSArray arrayWithObject:(NSString *)kUTTypePlainText]];
+	    [savePanel setAllowedFileTypes:@[(NSString *)kUTTypePlainText]];
 	    [savePanel setAllowsOtherFileTypes:YES];
 	} else {
             // NSDocument defaults to setting the allowedFileType to kUTTypePlainText, which gives the fileName a ".txt" extension. We want don't want to append the extension for Untitled documents.

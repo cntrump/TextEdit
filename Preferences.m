@@ -58,7 +58,7 @@
 
 @implementation Preferences
 
-- (id)init {
+- (instancetype)init {
     return [super initWithWindowNibName:@"Preferences"];
 }
 

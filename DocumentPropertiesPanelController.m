@@ -60,7 +60,7 @@
 
 @implementation DocumentPropertiesPanelController
 
-- (id)init {
+- (instancetype)init {
     return [super initWithWindowNibName:@"DocumentProperties"];
 }
 
@@ -80,7 +80,7 @@
 }
     
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (context == (__bridge void * _Nullable)([DocumentPropertiesPanelController class])) {
+    if (context == (__bridge void *)([DocumentPropertiesPanelController class])) {
 	[self activeDocumentChanged];
     } else {
 	[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -105,7 +105,7 @@
 
     // Make sure we start inspecting the document that is currently active, and start observing changes
     [self activeDocumentChanged];
-    [NSApp addObserver:self forKeyPath:@"mainWindow.windowController.document" options:0 context:(__bridge void * _Nullable)([DocumentPropertiesPanelController class])];
+    [NSApp addObserver:self forKeyPath:@"mainWindow.windowController.document" options:0 context:(__bridge void *)([DocumentPropertiesPanelController class])];
 
     NSWindow *window = [self window];
     [window setIdentifier:@"DocumentProperties"];

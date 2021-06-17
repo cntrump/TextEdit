@@ -77,7 +77,7 @@ enum {
 
 /* List of encodings that should be shown in encoding lists
 */
-- (NSArray *)enabledEncodings;
+@property (nonatomic, readonly, copy) NSArray *enabledEncodings;
 
 /* Empties then initializes the supplied popup with the supported encodings.
 */

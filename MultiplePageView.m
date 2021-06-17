@@ -53,7 +53,7 @@
 
 @implementation MultiplePageView
 
-- (id)initWithFrame:(NSRect)rect {
+- (instancetype)initWithFrame:(NSRect)rect {
     if ((self = [super initWithFrame:rect])) {
         numPages = 0;
         [self setLineColor:[NSColor lightGrayColor]];

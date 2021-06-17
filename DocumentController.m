@@ -94,7 +94,7 @@
         string = [[NSAttributedString alloc] initWithData:data options:nil documentAttributes:&attributes error:error];
     
         // We only expect to see plain-text, RTF, and RTFD at this point.
-        NSString *docType = [attributes objectForKey:NSDocumentTypeDocumentAttribute];
+        NSString *docType = attributes[NSDocumentTypeDocumentAttribute];
         if ([docType isEqualToString:NSPlainTextDocumentType]) {
             type = (NSString *)kUTTypeText;
         } else if ([docType isEqualToString:NSRTFTextDocumentType]) {
@@ -128,7 +128,7 @@
             [self addDocument:doc];
             [doc updateChangeCount:NSChangeReadOtherContents];
             
-            if (transientDoc) [self replaceTransientDocument:[NSArray arrayWithObjects:transientDoc, doc, nil]];
+            if (transientDoc) [self replaceTransientDocument:@[transientDoc, doc]];
             if (display) [self displayDocument:doc];
             
             return doc;
@@ -136,10 +136,8 @@
     }
     
     // Either we could not read data from pasteboard, or the data was interpreted with a type we don't understand.
-    if ((data == nil || (string != nil && type == nil)) && error) *error = [NSError errorWithDomain:TextEditErrorDomain code:TextEditOpenDocumentWithSelectionServiceFailed userInfo:[
-            NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Service failed. Couldn\\U2019t open the selection.", @"Title of alert indicating error during 'New Window Containing Selection' service"), NSLocalizedDescriptionKey,
-            NSLocalizedString(@"There might be an internal error or a performance problem, or the source application may be providing text of invalid type in the service request. Please try the operation a second time. If that doesn\\U2019t work, copy/paste the selection into TextEdit.", @"Recommendation when 'New Window Containing Selection' service fails"), NSLocalizedRecoverySuggestionErrorKey,
-            nil]];
+    if ((data == nil || (string != nil && type == nil)) && error) *error = [NSError errorWithDomain:TextEditErrorDomain code:TextEditOpenDocumentWithSelectionServiceFailed userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Service failed. Couldn\\U2019t open the selection.", @"Title of alert indicating error during 'New Window Containing Selection' service"),
+            NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"There might be an internal error or a performance problem, or the source application may be providing text of invalid type in the service request. Please try the operation a second time. If that doesn\\U2019t work, copy/paste the selection into TextEdit.", @"Recommendation when 'New Window Containing Selection' service fails")}];
 
     return nil;
 }
@@ -168,7 +166,7 @@
 - (Document *)transientDocumentToReplace {
     NSArray *documents = [self documents];
     Document *transientDoc = nil;
-    return ([documents count] == 1 && [(transientDoc = [documents objectAtIndex:0]) isTransientAndCanBeReplaced]) ? transientDoc : nil;
+    return ([documents count] == 1 && [(transientDoc = documents[0]) isTransientAndCanBeReplaced]) ? transientDoc : nil;
 }
 
 - (void)displayDocument:(NSDocument *)doc {
@@ -184,7 +182,7 @@
 - (void)replaceTransientDocument:(NSArray *)documents {
     // Transient document must be replaced on the main thread, since it may undergo automatic display on the main thread.
     if ([NSThread isMainThread]) {
-        NSDocument *transientDoc = [documents objectAtIndex:0], *doc = [documents objectAtIndex:1];
+        NSDocument *transientDoc = documents[0], *doc = documents[1];
         NSArray *controllersToTransfer = [[transientDoc windowControllers] copy];
         NSEnumerator *controllerEnum = [controllersToTransfer objectEnumerator];
         NSWindowController *controller;
@@ -229,7 +227,7 @@
     
     if (transientDoc) {
         if (doc) {
-            [self replaceTransientDocument:[NSArray arrayWithObjects:transientDoc, doc, nil]];
+            [self replaceTransientDocument:@[transientDoc, doc]];
             if (displayDocument) [self displayDocument:doc];
         }
         
@@ -260,7 +258,7 @@
 - (void)addDocument:(NSDocument *)newDoc {
     Document *firstDoc;
     NSArray *documents = [self documents];
-    if ([documents count] == 1 && (firstDoc = [documents objectAtIndex:0]) && [firstDoc isTransient]) {
+    if ([documents count] == 1 && (firstDoc = documents[0]) && [firstDoc isTransient]) {
         [firstDoc setTransient:NO];
     }
     [super addDocument:newDoc];
@@ -311,9 +309,9 @@
             if (ignoreState != NSMixedState) {  // Mixed state indicates they were different, and to leave them alone
                 ignoreHTML = ignoreRich = (ignoreState == NSOnState);
             }
-            NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithUnsignedInteger:encoding], PlainTextEncodingForRead, [NSNumber numberWithBool:ignoreHTML], IgnoreHTML, [NSNumber numberWithBool:ignoreRich], IgnoreRichText, nil];
+            NSDictionary *options = @{PlainTextEncodingForRead: @(encoding), IgnoreHTML: @(ignoreHTML), IgnoreRichText: @(ignoreRich)};
             for (NSURL *url in [openPanel URLs]) {
-                [customOpenSettings setObject:options forKey:url];
+                customOpenSettings[url] = options;
             }
         }
         completionHandler(result);
@@ -322,18 +320,18 @@
 }
 
 - (NSStringEncoding)lastSelectedEncodingForURL:(NSURL *)url {
-    NSDictionary *options = [customOpenSettings objectForKey:url];
-    return options ? [[options objectForKey:PlainTextEncodingForRead] unsignedIntegerValue] : [[[NSUserDefaults standardUserDefaults] objectForKey:PlainTextEncodingForRead] unsignedIntegerValue];
+    NSDictionary *options = customOpenSettings[url];
+    return options ? [options[PlainTextEncodingForRead] unsignedIntegerValue] : [[[NSUserDefaults standardUserDefaults] objectForKey:PlainTextEncodingForRead] unsignedIntegerValue];
 }
 
 - (BOOL)lastSelectedIgnoreHTMLForURL:(NSURL *)url {
-    NSDictionary *options = [customOpenSettings objectForKey:url];
-    return options ? [[options objectForKey:IgnoreHTML] unsignedIntegerValue] : [[NSUserDefaults standardUserDefaults] boolForKey:IgnoreHTML];;
+    NSDictionary *options = customOpenSettings[url];
+    return options ? [options[IgnoreHTML] unsignedIntegerValue] : [[NSUserDefaults standardUserDefaults] boolForKey:IgnoreHTML];;
 }
 
 - (BOOL)lastSelectedIgnoreRichForURL:(NSURL *)url {
-    NSDictionary *options = [customOpenSettings objectForKey:url];
-    return options ? [[options objectForKey:IgnoreRichText] unsignedIntegerValue] : [[NSUserDefaults standardUserDefaults] boolForKey:IgnoreRichText];
+    NSDictionary *options = customOpenSettings[url];
+    return options ? [options[IgnoreRichText] unsignedIntegerValue] : [[NSUserDefaults standardUserDefaults] boolForKey:IgnoreRichText];
 }
 
 /* The user can change the default document type between Rich and Plain in Preferences. We override

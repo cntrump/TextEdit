@@ -55,7 +55,7 @@
 
 @synthesize showsWrappingToFit, wrappingToFit;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     // We override the designated initializer, ignoring the nib since we need our own
     return [super initWithNibName:@"PrintPanelAccessory" bundle:nibBundleOrNil];
 }
@@ -94,12 +94,12 @@
  */
 - (void)setPageNumbering:(BOOL)flag {
     NSPrintInfo *printInfo = [self representedObject];
-    [[printInfo dictionary] setObject:[NSNumber numberWithBool:flag] forKey:NSPrintHeaderAndFooter];
+    [printInfo dictionary][NSPrintHeaderAndFooter] = @(flag);
 }
 
 - (BOOL)pageNumbering {
     NSPrintInfo *printInfo = [self representedObject];
-    return [[[printInfo dictionary] objectForKey:NSPrintHeaderAndFooter] boolValue];
+    return [[printInfo dictionary][NSPrintHeaderAndFooter] boolValue];
 }
 
 - (NSSet *)keyPathsForValuesAffectingPreview {
@@ -110,15 +110,11 @@
 */
 - (NSArray *)localizedSummaryItems {
     NSMutableArray *items = [NSMutableArray array];
-    [items addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                      NSLocalizedStringFromTable(@"Header and Footer", @"PrintAccessory", @"Print panel summary item title for whether header and footer (page number, date, document title) should be printed"), NSPrintPanelAccessorySummaryItemNameKey,
-                      [self pageNumbering] ? NSLocalizedStringFromTable(@"On", @"PrintAccessory", @"Print panel summary value for feature that is enabled") : NSLocalizedStringFromTable(@"Off", @"PrintAccessory", @"Print panel summary value for feature that is disabled"), NSPrintPanelAccessorySummaryItemDescriptionKey,
-                      nil]];
+    [items addObject:@{NSPrintPanelAccessorySummaryItemNameKey: NSLocalizedStringFromTable(@"Header and Footer", @"PrintAccessory", @"Print panel summary item title for whether header and footer (page number, date, document title) should be printed"),
+                      NSPrintPanelAccessorySummaryItemDescriptionKey: [self pageNumbering] ? NSLocalizedStringFromTable(@"On", @"PrintAccessory", @"Print panel summary value for feature that is enabled") : NSLocalizedStringFromTable(@"Off", @"PrintAccessory", @"Print panel summary value for feature that is disabled")}];
     // We add the "Rewrap to fit page" item to the summary only if the item is settable (which it isn't, for "wrap-to-page" mode)
-    if ([self showsWrappingToFit]) [items addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                     NSLocalizedStringFromTable(@"Rewrap to fit page", @"PrintAccessory", @"Print panel summary item title for whether document contents should be rewrapped to fit the page"), NSPrintPanelAccessorySummaryItemNameKey,
-                                                     [self wrappingToFit] ? NSLocalizedStringFromTable(@"On", @"PrintAccessory", @"Print panel summary value for feature that is enabled") : NSLocalizedStringFromTable(@"Off", @"PrintAccessory", @"Print panel summary value for feature that is disabled"), NSPrintPanelAccessorySummaryItemDescriptionKey,
-                                                     nil]];
+    if ([self showsWrappingToFit]) [items addObject:@{NSPrintPanelAccessorySummaryItemNameKey: NSLocalizedStringFromTable(@"Rewrap to fit page", @"PrintAccessory", @"Print panel summary item title for whether document contents should be rewrapped to fit the page"),
+                                                     NSPrintPanelAccessorySummaryItemDescriptionKey: [self wrappingToFit] ? NSLocalizedStringFromTable(@"On", @"PrintAccessory", @"Print panel summary value for feature that is enabled") : NSLocalizedStringFromTable(@"Off", @"PrintAccessory", @"Print panel summary value for feature that is disabled")}];
     return items;
 }
 

@@ -54,7 +54,7 @@
 @interface ScalingScrollView : NSScrollView
 
 - (void)setScaleFactor:(CGFloat)factor adjustPopup:(BOOL)flag;
-- (CGFloat)scaleFactor;
+@property (nonatomic, readonly) CGFloat scaleFactor;
 
 - (IBAction)zoomToActualSize:(id)sender;
 - (IBAction)zoomIn:(id)sender;

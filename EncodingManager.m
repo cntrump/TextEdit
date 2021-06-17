@@ -59,7 +59,7 @@
 */
 @implementation EncodingPopUpButtonCell
 
-- (id)initTextCell:(NSString *)stringValue pullsDown:(BOOL)pullDown {
+- (instancetype)initTextCell:(NSString *)stringValue pullsDown:(BOOL)pullDown {
     if (self = [super initTextCell:stringValue pullsDown:pullDown]) {        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(encodingsListChanged:) name:@"EncodingsListChanged" object:nil];
         [[EncodingManager sharedInstance] setupPopUpCell:self selectedEncoding:NoStringEncoding withDefaultEntry:NO];
@@ -67,7 +67,7 @@
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)coder {
+- (instancetype)initWithCoder:(NSCoder *)coder {
     if (self = [super initWithCoder:coder]) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(encodingsListChanged:) name:@"EncodingsListChanged" object:nil];
         [[EncodingManager sharedInstance] setupPopUpCell:self selectedEncoding:NoStringEncoding withDefaultEntry:([self numberOfItems] > 0 && [[self itemAtIndex:0] tag] == WantsAutomaticTag)];
@@ -104,7 +104,7 @@ static EncodingManager *sharedInstance = nil;
     return sharedInstance ? sharedInstance : [[self alloc] init];
 }
 
-- (id)init {
+- (instancetype)init {
     if (self = [super init]) {
         sharedInstance = self;
     }
@@ -142,7 +142,7 @@ static int encodingCompare(const void *firstPtr, const void *secondPtr) {
         allEncodings = [[NSMutableArray alloc] init];			// Now put it in an NSArray
         for (cnt = 0; cnt < num; cnt++) {
             NSStringEncoding nsEncoding = CFStringConvertEncodingToNSStringEncoding(tmp[cnt]);
-            if (nsEncoding && [NSString localizedNameOfStringEncoding:nsEncoding]) [allEncodings addObject:[NSNumber numberWithUnsignedInteger:nsEncoding]];
+            if (nsEncoding && [NSString localizedNameOfStringEncoding:nsEncoding]) [allEncodings addObject:@(nsEncoding)];
         }
         free(tmp);
     }
@@ -157,7 +157,7 @@ static int encodingCompare(const void *firstPtr, const void *secondPtr) {
     NSInteger cnt, numEncodings = [allEncodings count];
 
     for (cnt = 0; cnt < numEncodings; cnt++) {
-        NSNumber *encodingNumber = [allEncodings objectAtIndex:cnt];
+        NSNumber *encodingNumber = allEncodings[cnt];
         NSStringEncoding encoding = [encodingNumber unsignedIntegerValue];
         NSString *encodingName = [NSString localizedNameOfStringEncoding:encoding];
         NSCell *cell;
@@ -183,18 +183,18 @@ static int encodingCompare(const void *firstPtr, const void *secondPtr) {
     // Put the initial "Automatic" item, if desired
     if (includeDefaultItem) {
         [popup addItemWithTitle:NSLocalizedString(@"Automatic", @"Encoding popup entry indicating automatic choice of encoding")];
-        [[popup itemAtIndex:0] setRepresentedObject:[NSNumber numberWithUnsignedInteger:NoStringEncoding]];
+        [[popup itemAtIndex:0] setRepresentedObject:@(NoStringEncoding)];
         [[popup itemAtIndex:0] setTag:WantsAutomaticTag]; // so that the default entry is included again next time
     }
 
     // Make sure the initial selected encoding appears in the list
-    if (!includeDefaultItem && (selectedEncoding != NoStringEncoding) && ![encs containsObject:[NSNumber numberWithUnsignedInteger:selectedEncoding]]) encs = [encs arrayByAddingObject:[NSNumber numberWithUnsignedInteger:selectedEncoding]];
+    if (!includeDefaultItem && (selectedEncoding != NoStringEncoding) && ![encs containsObject:@(selectedEncoding)]) encs = [encs arrayByAddingObject:@(selectedEncoding)];
 
     numEncodings = [encs count];
 
     // Fill with encodings
     for (cnt = 0; cnt < numEncodings; cnt++) {
-        NSNumber *encodingNumber = [encs objectAtIndex:cnt];
+        NSNumber *encodingNumber = encs[cnt];
         NSStringEncoding encoding = [encodingNumber unsignedIntegerValue];
         [popup addItemWithTitle:[NSString localizedNameOfStringEncoding:encoding]];
         [[popup lastItem] setRepresentedObject:encodingNumber];
@@ -230,11 +230,11 @@ static int encodingCompare(const void *firstPtr, const void *secondPtr) {
             encs = [[NSMutableArray alloc] init];
             while (plainTextFileStringEncodingsSupported[cnt] != -1) {
                 if ((encoding = CFStringConvertEncodingToNSStringEncoding(plainTextFileStringEncodingsSupported[cnt++])) != kCFStringEncodingInvalidId) {
-                    [encs addObject:[NSNumber numberWithUnsignedInteger:encoding]];
+                    [encs addObject:@(encoding)];
                     if (encoding == defaultEncoding) hasDefault = YES;
                 }
             }
-            if (!hasDefault) [encs addObject:[NSNumber numberWithUnsignedInteger:defaultEncoding]];
+            if (!hasDefault) [encs addObject:@(defaultEncoding)];
         }
         encodings = encs;
     }
@@ -296,7 +296,7 @@ static int encodingCompare(const void *firstPtr, const void *secondPtr) {
 }
 
 - (IBAction)clearAll:(id)sender {
-    encodings = [NSArray array];				// Empty encodings list
+    encodings = @[];				// Empty encodings list
     [self noteEncodingListChange:YES updateList:YES postNotification:YES];
 }
 

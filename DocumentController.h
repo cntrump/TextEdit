@@ -71,7 +71,7 @@
 
 - (void)beginOpenPanel:(NSOpenPanel *)openPanel forTypes:(NSArray *)types completionHandler:(void (^)(NSInteger result))completionHandler;
 
-- (Document *)transientDocumentToReplace;
+@property (nonatomic, readonly, strong) Document *transientDocumentToReplace;
 - (void)displayDocument:(NSDocument *)doc;
 - (void)replaceTransientDocument:(NSArray *)documents;
 
