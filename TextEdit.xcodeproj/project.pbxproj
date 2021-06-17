@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15526517267C0DDD00B3FBBB /* DocumentProperties.nib in Resources */ = {isa = PBXBuildFile; fileRef = 15526510267C0DDD00B3FBBB /* DocumentProperties.nib */; };
+		15526518267C0DDD00B3FBBB /* SelectEncodingsPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 15526511267C0DDD00B3FBBB /* SelectEncodingsPanel.nib */; };
+		15526519267C0DDD00B3FBBB /* SelectLinePanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 15526512267C0DDD00B3FBBB /* SelectLinePanel.nib */; };
+		1552651A267C0DDD00B3FBBB /* Preferences.nib in Resources */ = {isa = PBXBuildFile; fileRef = 15526513267C0DDD00B3FBBB /* Preferences.nib */; };
+		1552651B267C0DDD00B3FBBB /* PrintPanelAccessory.nib in Resources */ = {isa = PBXBuildFile; fileRef = 15526514267C0DDD00B3FBBB /* PrintPanelAccessory.nib */; };
+		1552651C267C0DDD00B3FBBB /* EncodingAccessory.nib in Resources */ = {isa = PBXBuildFile; fileRef = 15526515267C0DDD00B3FBBB /* EncodingAccessory.nib */; };
+		1552651D267C0DDD00B3FBBB /* Edit.nib in Resources */ = {isa = PBXBuildFile; fileRef = 15526516267C0DDD00B3FBBB /* Edit.nib */; };
 		176A30480E23EB0600857A3B /* FontNameTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 176A30460E23EB0600857A3B /* FontNameTransformer.h */; };
 		176A30490E23EB0600857A3B /* FontNameTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 176A30470E23EB0600857A3B /* FontNameTransformer.m */; };
 		176A304D0E23EB6B00857A3B /* TextEditDefaultsKeys.h in Headers */ = {isa = PBXBuildFile; fileRef = 176A304C0E23EB6B00857A3B /* TextEditDefaultsKeys.h */; };
@@ -24,14 +31,10 @@
 		415B215F07BC0732009CEA53 /* ScalingScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FE20907FE93D5F211CA2CEA /* ScalingScrollView.h */; };
 		415B216007BC0732009CEA53 /* Preferences.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FE20908FE93D5F211CA2CEA /* Preferences.h */; };
 		415B216107BC0732009CEA53 /* EncodingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 92A68B0A02972957007F9DE6 /* EncodingManager.h */; };
-		415B216407BC0732009CEA53 /* Preferences.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6FE20910FE93D5F211CA2CEA /* Preferences.nib */; };
-		415B216507BC0732009CEA53 /* Edit.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6FE20912FE93D5F211CA2CEA /* Edit.nib */; };
 		415B216A07BC0732009CEA53 /* TextEdit.scriptTerminology in Resources */ = {isa = PBXBuildFile; fileRef = 6FE20924FE93D5F211CA2CEA /* TextEdit.scriptTerminology */; };
 		415B216C07BC0732009CEA53 /* TextEdit.scriptSuite in Resources */ = {isa = PBXBuildFile; fileRef = 6FE20926FE93D5F211CA2CEA /* TextEdit.scriptSuite */; };
 		415B217207BC0732009CEA53 /* DocumentWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = F549503200E2A3BB01CA0CA4 /* DocumentWindow.nib */; };
-		415B217307BC0732009CEA53 /* SelectEncodingsPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 92A68B1702972AB9007F9DE6 /* SelectEncodingsPanel.nib */; };
 		415B217607BC0732009CEA53 /* TextEdit Test Document.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 418B04C8062631D5009F55E2 /* TextEdit Test Document.rtf */; };
-		415B217707BC0732009CEA53 /* DocumentProperties.nib in Resources */ = {isa = PBXBuildFile; fileRef = 41278ABE06AF663000B5D78D /* DocumentProperties.nib */; };
 		415B217907BC0732009CEA53 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE208FBFE93D5F211CA2CEA /* Document.m */; settings = {ATTRIBUTES = (); }; };
 		415B217B07BC0732009CEA53 /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE208FDFE93D5F211CA2CEA /* Controller.m */; settings = {ATTRIBUTES = (); }; };
 		415B217C07BC0732009CEA53 /* ScalingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE208FEFE93D5F211CA2CEA /* ScalingScrollView.m */; settings = {ATTRIBUTES = (); }; };
@@ -40,16 +43,13 @@
 		415B217F07BC0732009CEA53 /* Edit_main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE2090AFE93D5F211CA2CEA /* Edit_main.m */; settings = {ATTRIBUTES = (); }; };
 		415B218007BC0732009CEA53 /* EncodingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A68B0B02972957007F9DE6 /* EncodingManager.m */; };
 		415B218207BC0732009CEA53 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0230D2BAFF2F83FC11CA0C5D /* Cocoa.framework */; };
-		419167BC0B78226D00B4CA33 /* SelectLinePanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 419167BA0B78226C00B4CA33 /* SelectLinePanel.nib */; };
 		41BFB8E91697ABFB00CD8A52 /* Edit.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 41BFB8E41697ABFB00CD8A52 /* Edit.iconset */; };
 		41BFB8EA1697ABFB00CD8A52 /* html.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 41BFB8E51697ABFB00CD8A52 /* html.iconset */; };
 		41BFB8EB1697ABFB00CD8A52 /* rtf.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 41BFB8E61697ABFB00CD8A52 /* rtf.iconset */; };
 		41BFB8EC1697ABFB00CD8A52 /* rtfd.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 41BFB8E71697ABFB00CD8A52 /* rtfd.iconset */; };
 		41BFB8ED1697ABFB00CD8A52 /* txt.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 41BFB8E81697ABFB00CD8A52 /* txt.iconset */; };
-		41CDED101747190A002F6E28 /* EncodingAccessory.nib in Resources */ = {isa = PBXBuildFile; fileRef = 41CDED0E1747190A002F6E28 /* EncodingAccessory.nib */; };
 		41FA793A0B95E61A00FA84AA /* PrintPanelAccessoryController.h in Headers */ = {isa = PBXBuildFile; fileRef = 41FA79380B95E61A00FA84AA /* PrintPanelAccessoryController.h */; };
 		41FA793B0B95E61A00FA84AA /* PrintPanelAccessoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41FA79390B95E61A00FA84AA /* PrintPanelAccessoryController.m */; };
-		41FA79A10B95F0F300FA84AA /* PrintPanelAccessory.nib in Resources */ = {isa = PBXBuildFile; fileRef = 41FA799F0B95F0F300FA84AA /* PrintPanelAccessory.nib */; };
 		FB69D020085E20E300646BBF /* DocumentWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = FB69D01E085E20E300646BBF /* DocumentWindowController.h */; };
 		FB69D021085E20E300646BBF /* DocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB69D01F085E20E300646BBF /* DocumentWindowController.m */; };
 		FBF176CA084E77CE005F6CEB /* DocumentController.h in Headers */ = {isa = PBXBuildFile; fileRef = FBF176C8084E77CE005F6CEB /* DocumentController.h */; };
@@ -60,6 +60,13 @@
 		0230D2BAFF2F83FC11CA0C5D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		0230D2BFFF2F85EF11CA0C5D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		0230D2C1FF2F85EF11CA0C5D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		15526510267C0DDD00B3FBBB /* DocumentProperties.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = DocumentProperties.nib; sourceTree = "<group>"; };
+		15526511267C0DDD00B3FBBB /* SelectEncodingsPanel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = SelectEncodingsPanel.nib; sourceTree = "<group>"; };
+		15526512267C0DDD00B3FBBB /* SelectLinePanel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = SelectLinePanel.nib; sourceTree = "<group>"; };
+		15526513267C0DDD00B3FBBB /* Preferences.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Preferences.nib; sourceTree = "<group>"; };
+		15526514267C0DDD00B3FBBB /* PrintPanelAccessory.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = PrintPanelAccessory.nib; sourceTree = "<group>"; };
+		15526515267C0DDD00B3FBBB /* EncodingAccessory.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = EncodingAccessory.nib; sourceTree = "<group>"; };
+		15526516267C0DDD00B3FBBB /* Edit.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Edit.nib; sourceTree = "<group>"; };
 		176A30460E23EB0600857A3B /* FontNameTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontNameTransformer.h; sourceTree = "<group>"; };
 		176A30470E23EB0600857A3B /* FontNameTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FontNameTransformer.m; sourceTree = "<group>"; };
 		176A304C0E23EB6B00857A3B /* TextEditDefaultsKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextEditDefaultsKeys.h; sourceTree = "<group>"; };
@@ -74,18 +81,11 @@
 		415B218507BC0732009CEA53 /* Info-TextEdit.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-TextEdit.plist"; sourceTree = "<group>"; };
 		415B218607BC0732009CEA53 /* TextEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		418B04C8062631D5009F55E2 /* TextEdit Test Document.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "TextEdit Test Document.rtf"; sourceTree = "<group>"; };
-		41B87F031639EFE7005437AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Base; path = Base.lproj/Edit.nib; sourceTree = "<group>"; };
-		41B87F041639EFE7005437AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Base; path = Base.lproj/Preferences.nib; sourceTree = "<group>"; };
-		41B87F061639EFE7005437AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Base; path = Base.lproj/PrintPanelAccessory.nib; sourceTree = "<group>"; };
-		41B87F071639EFE7005437AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Base; path = Base.lproj/SelectEncodingsPanel.nib; sourceTree = "<group>"; };
-		41B87F081639EFE7005437AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Base; path = Base.lproj/DocumentProperties.nib; sourceTree = "<group>"; };
-		41B87F091639EFE7005437AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Base; path = Base.lproj/SelectLinePanel.nib; sourceTree = "<group>"; };
 		41BFB8E41697ABFB00CD8A52 /* Edit.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Edit.iconset; sourceTree = "<group>"; };
 		41BFB8E51697ABFB00CD8A52 /* html.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = html.iconset; sourceTree = "<group>"; };
 		41BFB8E61697ABFB00CD8A52 /* rtf.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = rtf.iconset; sourceTree = "<group>"; };
 		41BFB8E71697ABFB00CD8A52 /* rtfd.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = rtfd.iconset; sourceTree = "<group>"; };
 		41BFB8E81697ABFB00CD8A52 /* txt.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = txt.iconset; sourceTree = "<group>"; };
-		41CDED0F1747190A002F6E28 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/EncodingAccessory.nib; sourceTree = "<group>"; };
 		41FA79380B95E61A00FA84AA /* PrintPanelAccessoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintPanelAccessoryController.h; sourceTree = "<group>"; };
 		41FA79390B95E61A00FA84AA /* PrintPanelAccessoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintPanelAccessoryController.m; sourceTree = "<group>"; };
 		6FE208FBFE93D5F211CA2CEA /* Document.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Document.m; sourceTree = "<group>"; };
@@ -190,14 +190,14 @@
 		6FE2090BFE93D5F211CA2CEA /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
-				41CDED0E1747190A002F6E28 /* EncodingAccessory.nib */,
+				15526510267C0DDD00B3FBBB /* DocumentProperties.nib */,
 				F549503200E2A3BB01CA0CA4 /* DocumentWindow.nib */,
-				6FE20912FE93D5F211CA2CEA /* Edit.nib */,
-				6FE20910FE93D5F211CA2CEA /* Preferences.nib */,
-				41FA799F0B95F0F300FA84AA /* PrintPanelAccessory.nib */,
-				92A68B1702972AB9007F9DE6 /* SelectEncodingsPanel.nib */,
-				41278ABE06AF663000B5D78D /* DocumentProperties.nib */,
-				419167BA0B78226C00B4CA33 /* SelectLinePanel.nib */,
+				15526516267C0DDD00B3FBBB /* Edit.nib */,
+				15526515267C0DDD00B3FBBB /* EncodingAccessory.nib */,
+				15526513267C0DDD00B3FBBB /* Preferences.nib */,
+				15526514267C0DDD00B3FBBB /* PrintPanelAccessory.nib */,
+				15526511267C0DDD00B3FBBB /* SelectEncodingsPanel.nib */,
+				15526512267C0DDD00B3FBBB /* SelectLinePanel.nib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -325,20 +325,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				415B216407BC0732009CEA53 /* Preferences.nib in Resources */,
-				415B216507BC0732009CEA53 /* Edit.nib in Resources */,
 				415B216A07BC0732009CEA53 /* TextEdit.scriptTerminology in Resources */,
+				1552651B267C0DDD00B3FBBB /* PrintPanelAccessory.nib in Resources */,
 				415B216C07BC0732009CEA53 /* TextEdit.scriptSuite in Resources */,
+				15526519267C0DDD00B3FBBB /* SelectLinePanel.nib in Resources */,
 				415B217207BC0732009CEA53 /* DocumentWindow.nib in Resources */,
-				415B217307BC0732009CEA53 /* SelectEncodingsPanel.nib in Resources */,
-				41CDED101747190A002F6E28 /* EncodingAccessory.nib in Resources */,
+				1552651D267C0DDD00B3FBBB /* Edit.nib in Resources */,
 				415B217607BC0732009CEA53 /* TextEdit Test Document.rtf in Resources */,
-				415B217707BC0732009CEA53 /* DocumentProperties.nib in Resources */,
-				419167BC0B78226D00B4CA33 /* SelectLinePanel.nib in Resources */,
-				41FA79A10B95F0F300FA84AA /* PrintPanelAccessory.nib in Resources */,
+				15526518267C0DDD00B3FBBB /* SelectEncodingsPanel.nib in Resources */,
 				41BFB8E91697ABFB00CD8A52 /* Edit.iconset in Resources */,
+				1552651C267C0DDD00B3FBBB /* EncodingAccessory.nib in Resources */,
+				15526517267C0DDD00B3FBBB /* DocumentProperties.nib in Resources */,
 				41BFB8EA1697ABFB00CD8A52 /* html.iconset in Resources */,
 				41BFB8EB1697ABFB00CD8A52 /* rtf.iconset in Resources */,
+				1552651A267C0DDD00B3FBBB /* Preferences.nib in Resources */,
 				41BFB8EC1697ABFB00CD8A52 /* rtfd.iconset in Resources */,
 				41BFB8ED1697ABFB00CD8A52 /* txt.iconset in Resources */,
 			);
@@ -391,65 +391,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		41278ABE06AF663000B5D78D /* DocumentProperties.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				41B87F081639EFE7005437AB /* Base */,
-			);
-			name = DocumentProperties.nib;
-			sourceTree = "<group>";
-		};
-		419167BA0B78226C00B4CA33 /* SelectLinePanel.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				41B87F091639EFE7005437AB /* Base */,
-			);
-			name = SelectLinePanel.nib;
-			sourceTree = "<group>";
-		};
-		41CDED0E1747190A002F6E28 /* EncodingAccessory.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				41CDED0F1747190A002F6E28 /* English */,
-			);
-			name = EncodingAccessory.nib;
-			sourceTree = "<group>";
-		};
-		41FA799F0B95F0F300FA84AA /* PrintPanelAccessory.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				41B87F061639EFE7005437AB /* Base */,
-			);
-			name = PrintPanelAccessory.nib;
-			sourceTree = "<group>";
-		};
-		6FE20910FE93D5F211CA2CEA /* Preferences.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				41B87F041639EFE7005437AB /* Base */,
-			);
-			name = Preferences.nib;
-			sourceTree = "<group>";
-		};
-		6FE20912FE93D5F211CA2CEA /* Edit.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				41B87F031639EFE7005437AB /* Base */,
-			);
-			name = Edit.nib;
-			sourceTree = "<group>";
-		};
-		92A68B1702972AB9007F9DE6 /* SelectEncodingsPanel.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				41B87F071639EFE7005437AB /* Base */,
-			);
-			name = SelectEncodingsPanel.nib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		41534B8F08A2B299002069FE /* Debug */ = {

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment version="1080" identifier="macosx"/>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
-        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="DocumentPropertiesPanelController">
@@ -41,21 +40,6 @@
                         </textFieldCell>
                         <connections>
                             <accessibilityConnection property="title" destination="100" id="259"/>
-                            <binding destination="63" name="editable2" keyPath="selection.richText" previousBinding="186" id="188">
-                                <dictionary key="options">
-                                    <integer key="NSMultipleValuesPlaceholder" value="-1"/>
-                                    <integer key="NSNoSelectionPlaceholder" value="-1"/>
-                                    <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                    <integer key="NSNullPlaceholder" value="-1"/>
-                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                </dictionary>
-                            </binding>
-                            <binding destination="63" name="editable" keyPath="selection.readOnly" id="186">
-                                <dictionary key="options">
-                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                </dictionary>
-                            </binding>
                             <binding destination="63" name="value" keyPath="selection.keywords" id="214">
                                 <dictionary key="options">
                                     <integer key="NSAllowsEditingMultipleValuesSelection" value="1"/>
@@ -70,6 +54,21 @@
                                     <string key="NSNullPlaceholder"></string>
                                     <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                     <integer key="NSValidatesImmediately" value="0"/>
+                                </dictionary>
+                            </binding>
+                            <binding destination="63" name="editable" keyPath="selection.readOnly" id="186">
+                                <dictionary key="options">
+                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                </dictionary>
+                            </binding>
+                            <binding destination="63" name="editable2" keyPath="selection.richText" previousBinding="186" id="188">
+                                <dictionary key="options">
+                                    <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                    <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                    <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                    <integer key="NSNullPlaceholder" value="-1"/>
+                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                 </dictionary>
                             </binding>
                             <outlet property="nextKeyView" destination="143" id="236"/>
@@ -92,6 +91,12 @@
                         </textFieldCell>
                         <connections>
                             <accessibilityConnection property="title" destination="14" id="257"/>
+                            <binding destination="63" name="editable" keyPath="selection.readOnly" id="178">
+                                <dictionary key="options">
+                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                </dictionary>
+                            </binding>
                             <binding destination="63" name="editable2" keyPath="selection.richText" previousBinding="178" id="180">
                                 <dictionary key="options">
                                     <integer key="NSMultipleValuesPlaceholder" value="-1"/>
@@ -99,12 +104,6 @@
                                     <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                     <integer key="NSNullPlaceholder" value="-1"/>
                                     <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                </dictionary>
-                            </binding>
-                            <binding destination="63" name="editable" keyPath="selection.readOnly" id="178">
-                                <dictionary key="options">
-                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
                                 </dictionary>
                             </binding>
                             <binding destination="63" name="value" keyPath="selection.title" id="247">
@@ -138,20 +137,6 @@
                         </textFieldCell>
                         <connections>
                             <accessibilityConnection property="title" destination="17" id="254"/>
-                            <binding destination="63" name="editable2" keyPath="selection.readOnly" previousBinding="198" id="200">
-                                <dictionary key="options">
-                                    <integer key="NSMultipleValuesPlaceholder" value="-1"/>
-                                    <integer key="NSNoSelectionPlaceholder" value="-1"/>
-                                    <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                    <integer key="NSNullPlaceholder" value="-1"/>
-                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                </dictionary>
-                            </binding>
-                            <binding destination="63" name="editable" keyPath="selection.richText" id="198">
-                                <dictionary key="options">
-                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                </dictionary>
-                            </binding>
                             <binding destination="63" name="value" keyPath="selection.author" id="100238">
                                 <dictionary key="options">
                                     <integer key="NSAllowsEditingMultipleValuesSelection" value="1"/>
@@ -166,6 +151,20 @@
                                     <string key="NSNullPlaceholder"></string>
                                     <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                     <integer key="NSValidatesImmediately" value="0"/>
+                                </dictionary>
+                            </binding>
+                            <binding destination="63" name="editable2" keyPath="selection.readOnly" previousBinding="198" id="200">
+                                <dictionary key="options">
+                                    <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                    <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                    <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                    <integer key="NSNullPlaceholder" value="-1"/>
+                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                </dictionary>
+                            </binding>
+                            <binding destination="63" name="editable" keyPath="selection.richText" id="198">
+                                <dictionary key="options">
+                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                 </dictionary>
                             </binding>
                             <outlet property="nextKeyView" destination="18" id="231"/>
@@ -188,21 +187,6 @@
                         </textFieldCell>
                         <connections>
                             <accessibilityConnection property="title" destination="19" id="255"/>
-                            <binding destination="63" name="editable2" keyPath="selection.richText" previousBinding="170" id="172">
-                                <dictionary key="options">
-                                    <integer key="NSMultipleValuesPlaceholder" value="-1"/>
-                                    <integer key="NSNoSelectionPlaceholder" value="-1"/>
-                                    <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                    <integer key="NSNullPlaceholder" value="-1"/>
-                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                </dictionary>
-                            </binding>
-                            <binding destination="63" name="editable" keyPath="selection.readOnly" id="170">
-                                <dictionary key="options">
-                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                </dictionary>
-                            </binding>
                             <binding destination="63" name="value" keyPath="selection.company" id="100240">
                                 <dictionary key="options">
                                     <integer key="NSAllowsEditingMultipleValuesSelection" value="1"/>
@@ -217,6 +201,21 @@
                                     <string key="NSNullPlaceholder"></string>
                                     <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                     <integer key="NSValidatesImmediately" value="0"/>
+                                </dictionary>
+                            </binding>
+                            <binding destination="63" name="editable" keyPath="selection.readOnly" id="170">
+                                <dictionary key="options">
+                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                </dictionary>
+                            </binding>
+                            <binding destination="63" name="editable2" keyPath="selection.richText" previousBinding="170" id="172">
+                                <dictionary key="options">
+                                    <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                    <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                    <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                    <integer key="NSNullPlaceholder" value="-1"/>
+                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                 </dictionary>
                             </binding>
                             <outlet property="nextKeyView" destination="20" id="232"/>
@@ -239,21 +238,6 @@
                         </textFieldCell>
                         <connections>
                             <accessibilityConnection property="title" destination="21" id="256"/>
-                            <binding destination="63" name="editable2" keyPath="selection.richText" previousBinding="174" id="175">
-                                <dictionary key="options">
-                                    <integer key="NSMultipleValuesPlaceholder" value="-1"/>
-                                    <integer key="NSNoSelectionPlaceholder" value="-1"/>
-                                    <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                    <integer key="NSNullPlaceholder" value="-1"/>
-                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                </dictionary>
-                            </binding>
-                            <binding destination="63" name="editable" keyPath="selection.readOnly" id="174">
-                                <dictionary key="options">
-                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                </dictionary>
-                            </binding>
                             <binding destination="63" name="value" keyPath="selection.copyright" id="100242">
                                 <dictionary key="options">
                                     <integer key="NSAllowsEditingMultipleValuesSelection" value="1"/>
@@ -268,6 +252,21 @@
                                     <string key="NSNullPlaceholder"></string>
                                     <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                     <integer key="NSValidatesImmediately" value="0"/>
+                                </dictionary>
+                            </binding>
+                            <binding destination="63" name="editable" keyPath="selection.readOnly" id="174">
+                                <dictionary key="options">
+                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                </dictionary>
+                            </binding>
+                            <binding destination="63" name="editable2" keyPath="selection.richText" previousBinding="174" id="175">
+                                <dictionary key="options">
+                                    <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                    <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                    <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                    <integer key="NSNullPlaceholder" value="-1"/>
+                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                 </dictionary>
                             </binding>
                             <outlet property="nextKeyView" destination="15" id="233"/>
@@ -301,21 +300,6 @@
                         </textFieldCell>
                         <connections>
                             <accessibilityConnection property="title" destination="22" id="260"/>
-                            <binding destination="63" name="editable2" keyPath="selection.readOnly" previousBinding="182" id="183">
-                                <dictionary key="options">
-                                    <integer key="NSMultipleValuesPlaceholder" value="-1"/>
-                                    <integer key="NSNoSelectionPlaceholder" value="-1"/>
-                                    <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                    <integer key="NSNullPlaceholder" value="-1"/>
-                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                </dictionary>
-                            </binding>
-                            <binding destination="63" name="editable" keyPath="selection.richText" id="182">
-                                <dictionary key="options">
-                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                </dictionary>
-                            </binding>
                             <binding destination="63" name="value" keyPath="selection.comment" id="212">
                                 <dictionary key="options">
                                     <integer key="NSAllowsEditingMultipleValuesSelection" value="1"/>
@@ -330,6 +314,21 @@
                                     <string key="NSNullPlaceholder"></string>
                                     <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                     <integer key="NSValidatesImmediately" value="0"/>
+                                </dictionary>
+                            </binding>
+                            <binding destination="63" name="editable2" keyPath="selection.readOnly" previousBinding="182" id="183">
+                                <dictionary key="options">
+                                    <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                    <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                    <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                    <integer key="NSNullPlaceholder" value="-1"/>
+                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                </dictionary>
+                            </binding>
+                            <binding destination="63" name="editable" keyPath="selection.richText" id="182">
+                                <dictionary key="options">
+                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                 </dictionary>
                             </binding>
                             <outlet property="nextKeyView" destination="16" id="237"/>
@@ -352,6 +351,12 @@
                         </textFieldCell>
                         <connections>
                             <accessibilityConnection property="title" destination="221" id="258"/>
+                            <binding destination="63" name="editable" keyPath="selection.readOnly" id="243">
+                                <dictionary key="options">
+                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                </dictionary>
+                            </binding>
                             <binding destination="63" name="editable2" keyPath="selection.richText" previousBinding="243" id="244">
                                 <dictionary key="options">
                                     <integer key="NSMultipleValuesPlaceholder" value="-1"/>
@@ -359,12 +364,6 @@
                                     <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                     <integer key="NSNullPlaceholder" value="-1"/>
                                     <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                </dictionary>
-                            </binding>
-                            <binding destination="63" name="editable" keyPath="selection.readOnly" id="243">
-                                <dictionary key="options">
-                                    <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
                                 </dictionary>
                             </binding>
                             <binding destination="63" name="value" keyPath="selection.subject" id="229">
@@ -465,11 +464,12 @@
                 <string>company</string>
                 <string>title</string>
             </declaredKeys>
+            <classReference key="objectClass" className="Document"/>
             <connections>
                 <binding destination="-2" name="contentObject" keyPath="inspectedDocument" id="100237"/>
             </connections>
         </objectController>
         <customObject id="250" userLabel="Shared App" customClass="NSApplication"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
     </objects>
 </document>
